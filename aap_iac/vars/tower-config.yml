@@ -1,0 +1,62 @@
+thost: aap-url
+tuser: admin
+tpass: ansible
+
+domain: demoday.com
+
+organizations:
+  - name: demoday
+    desc: "Demo Day Organization"
+
+teams:
+  - name: developers
+    org: demoday
+    desc: "Team Developers Default"
+  - name: operators
+    org: demoday
+    desc: "Team Operators Default"
+
+users:
+  - username: demoday01
+    password: demoday01
+    email: "demoday01@{{ domain }}"
+    org: demoday
+    role: admin
+
+admin_users:
+  - username: administrator01
+    password: administrator01
+    email: "administrator01@{{ domain }}"
+
+auditor_users:
+  - username: auditor01
+    password: auditor01
+    email: "auditor01@{{ domain }}"
+
+inventories:
+  - name: demoday
+    desc: "Demo Day Inventory"
+    org: demoday
+
+scm_credentials:
+  - name: "[TEST] Git Server"
+    org: demoday
+    type: "Source Control"
+    user: towertest
+    pass: towertest
+
+scm_projects:
+  - name: "[LABS] Lessons Project"
+    desc: "Lessons Project"
+    org: demoday
+    git_url: "https://github.com/acidonper/ansible-training.git"
+    git_branch: master
+    git_cred: "[TEST] Git Server"
+
+scm_jobtemplates:
+  - name: "[DEV] My First Test by Ansible"
+    org: demoday
+    inv: demoday
+    project: "[LABS] Lessons Project"
+    playbook: "examples/ping.yml"
+    creds: []

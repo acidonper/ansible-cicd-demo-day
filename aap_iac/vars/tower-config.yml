@@ -1,4 +1,4 @@
-thost: aap-url
+thost: aap-ansible-automation-platform.apps.openshift.domain.com
 tuser: admin
 tpass: ansible
 

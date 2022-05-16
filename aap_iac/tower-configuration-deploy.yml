@@ -1,5 +1,5 @@
 ##
-# ansible-playbook -i inventory tower-configuration-deploy.yml -k -K
+# ansible-playbook -i inventory tower-configuration-deploy.yml
 ##
 
 - hosts: localhost
@@ -118,7 +118,7 @@
         - inventories is defined
         - inventories|length > 0
 
-    - name: Create a valid SCM credentials
+    - name: Create Credentials
       awx.awx.credential:
         name: "{{ item.name }}"
         organization: "{{ item.org }}"

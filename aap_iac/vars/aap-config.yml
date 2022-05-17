@@ -1,0 +1,96 @@
+thost: aap-ansible-automation-platform.apps.ansiblecicd.sandbox261.opentlc.com
+tuser: admin
+tpass: ansible
+
+domain: demoday.com
+
+organizations: []
+
+teams: []
+
+users: []
+
+admin_users: []
+
+auditor_users: []
+
+inventories: 
+  - name: Dev
+    desc: "Development Inventory"
+    org: Default
+
+scm_credentials: []
+
+scm_projects:
+  - name: "Ansible CI/CD"
+    desc: "Ansible CI/CD Project"
+    org: Default
+    git_url: "https://github.com/acidonper/ansible-cicd-demo-day.git"
+    git_branch: master
+    git_cred: ""
+
+scm_jobtemplates:
+  - name: "[CICD] Unit Tests"
+    org: Default
+    inv: Dev
+    project: "Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/00-unittests.yml"
+    creds: []
+  - name: "[CICD] Publish Hub"
+    org: Default
+    inv: Dev
+    project: "Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/01-hub-publish.yml"
+    creds:
+      - "AAP Hub"
+  - name: "[CICD] Promotion DEV -> PRO"
+    org: Default
+    inv: Dev
+    project: "Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/03-promotion.yml"
+    creds: 
+      - "Git Repo"
+
+scm_workflowjobtemplates:
+  - name: "[CICD] Unit Tests"
+    org: Default
+    inv: Dev
+    steps:
+      - identifier: node101
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[CICD] Unit Tests"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes:
+            - identifier: node201
+          failure_nodes: []
+          always_nodes: []
+          credentials: []  
+      - identifier: node201
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[CICD] Publish Hub"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes:
+            - identifier: node301
+          failure_nodes: []
+          always_nodes: []
+          credentials: []      
+      - identifier: node301
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[CICD] Promotion DEV -> PRO"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes: []
+          failure_nodes: []
+          always_nodes: []
+          credentials: []   

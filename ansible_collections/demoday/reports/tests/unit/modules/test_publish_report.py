@@ -22,7 +22,8 @@ def common_args():
             'current': { 
                 'cash': '14.434$',
                 'account_receivable': '234.434$',
-                'inventory': '543.342$'
+                'inventory': '543.342$',
+                'total': '792.210$'
             }, 
             'long_term': '834.875$',
             'total': '1.627.085$'
@@ -48,7 +49,8 @@ def test_publish_report(module_mock):
                 'current': { 
                     'cash': '14.434$',
                     'account_receivable': '234.434$',
-                    'inventory': '543.342$'
+                    'inventory': '543.342$',
+                    'total': '792.210$'
                 }, 
                 'long_term': '834.875$',
                 'total': '1.627.085$'
@@ -64,7 +66,8 @@ def test_publish_report(module_mock):
                 'current': { 
                     'cash': '14.434$',
                     'account_receivable': '234.434$',
-                    'inventory': '543.342$'
+                    'inventory': '543.342$',
+                    'total': '792.210$'
                 }, 
                 'long_term': '834.875$',
                 'total': '1.627.085$'

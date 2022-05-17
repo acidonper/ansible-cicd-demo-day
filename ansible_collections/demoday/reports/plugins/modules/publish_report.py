@@ -53,11 +53,12 @@ EXAMPLES = '''
     password: password
     url: http://api.domain.com/
     report: 
-      assests:
+      assets:
         current:
             cash: 14.434$
             account_receivable: 234.434$
             inventory: 543.342$
+            total: 792.210$
         long_term: 834.875$
         total: 1.627.085$
 '''
@@ -70,11 +71,12 @@ imported:
     sample:
         response:
             data:
-                assests:
+                assets:
                     current:
                         cash: 14.434$
                         account_receivable: 234.434$
                         inventory: 543.342$
+                        total: 792.210$
                     long_term: 834.875$
                     total: 1.627.085$
             message: Report Created
@@ -108,7 +110,7 @@ try:
             changed=False,
             response={
                 "data": {  
-                    "assests": {
+                    "assets": {
                         "current": "123.123$",
                         "long_term": "123.123$",
                         "total": "246.246$"

@@ -7,11 +7,12 @@
     api_password: password
     api_url: http://localhost:8080/reports/new
     report: 
-      assests:
+      assets:
         current:
             cash: 14.434$
             account_receivable: 234.434$
             inventory: 543.342$
+            total: 792.210$
         long_term: 834.875$
         total: 1.627.085$
   

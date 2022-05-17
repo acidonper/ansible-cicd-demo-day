@@ -1,6 +1,7 @@
 # Others
 ansible_collections/demoday/reports/tests/output
 *.tar.gz
+reports_app/node_modules
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

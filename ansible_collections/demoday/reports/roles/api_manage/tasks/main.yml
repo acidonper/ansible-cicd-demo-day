@@ -1,0 +1,9 @@
+---
+# tasks file for roles/api_manage
+
+- name: Publish Report
+  demoday.reports.publish_report:
+    username: "{{ api_username }}"
+    password: "{{ api_password }}"
+    url: "{{ api_url }}"
+    report: "{{ report }}"

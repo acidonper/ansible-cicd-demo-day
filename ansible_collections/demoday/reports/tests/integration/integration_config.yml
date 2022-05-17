@@ -1,0 +1,11 @@
+api_username: admin
+api_password: password
+api_url: http://localhost:8080
+report: 
+  assests:
+    current:
+        cash: 14.434$
+        account_receivable: 234.434$
+        inventory: 543.342$
+    long_term: 834.875$
+    total: 1.627.085$

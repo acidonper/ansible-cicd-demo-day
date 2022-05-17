@@ -1,8 +1,8 @@
-# Ansible Tower Configuration as a Code
+# Ansible Automation Platform Configuration as a Code
 
-Red Hat Ansible Tower configuration as a Code includes a procedure to configure an Ansible Tower installation creating and configuring some objects through a programmatic procedure. 
+Red Hat Ansible Automation Platform configuration as a Code includes a procedure to configure an Ansible Automation Platform installation creating and configuring some objects through a programmatic procedure. 
 
-The following list includes the Ansible Tower's elements which can be created and configured in this procedure:
+The following list includes the Ansible Automation Platform's elements which can be created and configured in this procedure:
 
 -   Organization
 -   Users
@@ -15,11 +15,11 @@ The following list includes the Ansible Tower's elements which can be created an
 
 ## Configurable Resources
 
-In order to create the objects which have been included above, It is required to include their definition in a variables file and configure the inventory file in order to link the Ansible Tower installation.
+In order to create the objects which have been included above, It is required to include their definition in a variables file and configure the inventory file in order to link the Ansible Automation Platform installation.
 
 ### vars
 
--   tower-config.yml -> Configuration as a code file which includes organization, users, teams, projects, credentials and Job Template definitions. On the other hand, includes connection parameters to Ansible Tower Cluster installed.
+-   aap-config.yml -> Configuration as a code file which includes organization, users, teams, projects, credentials and Job Template definitions. On the other hand, includes connection parameters to Ansible Automation Platform Cluster installed.
 
 ## Requirements
 
@@ -36,19 +36,19 @@ The programmatic procedure includes both the creation and deletion of the object
 
 ### Playbooks
 
--   tower-configuration-deploy.yml -> Using tower-config.yml file, deploy all items in Ansible Tower
--   tower-configuration-undeploy.yml -> Using tower-config.yml file, delete all items in Ansible Tower
+-   aap-configuration-deploy.yml -> Using aap-config.yml file, deploy all items in Ansible Automation Platform
+-   aap-configuration-undeploy.yml -> Using aap-config.yml file, delete all items in Ansible Automation Platform
 
 ### Examples
 
--   Deploy Red Hat Ansible Tower programmatic configuration
+-   Deploy Red Hat Ansible Automation Platform programmatic configuration
 ```
-$ ansible-playbook tower-configuration-deploy.yml
+$ ansible-playbook aap-configuration-deploy.yml
 ```
 
--   Delete Red Hat Ansible Tower programmatic configuration
+-   Delete Red Hat Ansible Automation Platform programmatic configuration
 ```
-$ ansible-playbook tower-configuration-undeploy.yml
+$ ansible-playbook aap-configuration-undeploy.yml
 ```
 
 ## Author

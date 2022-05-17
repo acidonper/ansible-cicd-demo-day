@@ -1,44 +1,44 @@
 ##
-# ansible-playbook -i inventory tower-configuration-deploy.yml
+# ansible-playbook -i inventory aap-configuration-deploy.yml
 ##
 
 - hosts: localhost
   connection: local
   gather_facts: false
   vars_files:
-    - ./vars/tower-config.yml
+    - ./vars/aap-config.yml
   tasks:
 
-    - name: Create tower organizations
+    - name: Create AAP organizations
       awx.awx.organization:
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ organizations }}"
       when:
         - organizations is defined
         - organizations|length > 0
 
-    - name: Create tower teams
+    - name: Create AAP teams
       awx.awx.team:
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
         organization: "{{ item.org }}"
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ teams }}"
       when:
         - teams is defined
         - teams|length > 0
 
-    - name: Create Tower Users
+    - name: Create AAP Users
       awx.awx.user:
         username: "{{ item.username }}"
         password: "{{ item.password }}"
@@ -46,30 +46,30 @@
         update_secrets: false
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ users }}"
       when:
         - users is defined
         - users|length > 0
 
-    - name: Add Tower Users to organization 
+    - name: Add AAP Users to organization 
       awx.awx.role:
         user: "{{ item.username }}"
         role: "{{ item.role }}"
         organization: "{{ item.org }}"
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ users }}"
       when:
         - users is defined
         - users|length > 0
 
-    - name: Create Tower admin Users
+    - name: Create AAP admin Users
       awx.awx.user:
         username: "{{ item.username }}"
         password: "{{ item.password }}"
@@ -78,15 +78,15 @@
         superuser: yes
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ admin_users }}"
       when:
         - admin_users is defined
         - admin_users|length > 0
 
-    - name: Create Tower auditor Users
+    - name: Create AAP auditor Users
       awx.awx.user:
         username: "{{ item.username }}"
         password: "{{ item.password }}"
@@ -95,24 +95,24 @@
         auditor: yes
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ auditor_users }}"
       when:
         - auditor_users is defined
         - auditor_users|length > 0
 
-    - name: Create tower Inventories
+    - name: Create AAP Inventories
       awx.awx.inventory:
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
         organization: "{{ item.org }}"
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ inventories }}"
       when:
         - inventories is defined
@@ -129,9 +129,9 @@
           password: "{{ item.pass }}"
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ scm_credentials }}"
       when:
         - scm_credentials is defined
@@ -151,15 +151,15 @@
         scm_url: "{{ item.git_url }}"
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ scm_projects }}"
       when:
         - scm_projects is defined
         - scm_projects|length > 0
 
-    - name: Create First tower job template
+    - name: Create AAP Job Templates
       awx.awx.job_template:
         name: "{{ item.name }}"
         job_type: "run"
@@ -170,10 +170,27 @@
         credentials: "{{ item.creds }}"
         state: present
         validate_certs: no
-        controller_host: "{{ thost }}"
-        controller_username: "{{ tuser }}"
-        controller_password: "{{ tpass }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
       loop: "{{ scm_jobtemplates }}"
       when:
         - scm_jobtemplates is defined
         - scm_jobtemplates|length > 0
+
+
+    - name: Create AAP Workflow Job Templates
+      awx.awx.workflow_job_template:
+        name: "{{ item.name }}"
+        organization: "{{ item.org }}"
+        inventory: "{{ item.inv }}"
+        schema: "{{ item.steps }}"
+        state: present
+        validate_certs: no
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
+      loop: "{{ scm_workflowjobtemplates }}"
+      when:
+        - scm_workflowjobtemplates is defined
+        - scm_workflowjobtemplates|length > 0

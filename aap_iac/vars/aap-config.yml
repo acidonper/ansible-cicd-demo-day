@@ -1,6 +1,6 @@
-thost: aap-ansible-automation-platform.apps.ansiblecicd.sandbox261.opentlc.com
-tuser: admin
-tpass: ansible
+aap_host: aap-ansible-automation-platform.apps.opentlc.com
+aap_user: admin
+aap_pass: ansible
 
 domain: demoday.com
 
@@ -40,19 +40,17 @@ scm_jobtemplates:
     org: Default
     inv: Dev
     project: "Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/01-hub-publish.yml"
-    creds:
-      - "AAP Hub"
+    playbook: "ansible_tools/playbooks/01-publish-hub.yml"
+    creds: []
   - name: "[CICD] Promotion DEV -> PRO"
     org: Default
     inv: Dev
     project: "Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/03-promotion.yml"
-    creds: 
-      - "Git Repo"
+    playbook: "ansible_tools/playbooks/02-promotion.yml"
+    creds: []
 
 scm_workflowjobtemplates:
-  - name: "[CICD] Unit Tests"
+  - name: "[CICD] Pipeline Template - Collection Promotion"
     org: Default
     inv: Dev
     steps:

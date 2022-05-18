@@ -57,6 +57,12 @@ def test_publish_report(module_mock):
             }
         }
     })
+    
+    def __init__(self, argument_spec,
+             supports_check_mode=False):
+    self.argument_spec = argument_spec
+    self.supports_check_mode = supports_check_mode
+    self.check_mode = True
     with mock.patch.object(AnsibleModule, '__init__', __init__):
         with pytest.raises(AnsibleExitJson) as result:
             my_module.main()

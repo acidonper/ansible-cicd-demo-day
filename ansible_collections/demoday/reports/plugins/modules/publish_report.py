@@ -90,7 +90,7 @@ try:
     from requests.exceptions import HTTPError
     from requests import RequestException
 
-    def run_module():
+    def run_module(module: AnsibleModule):
         """
         Method include all execution functions when run from ansible module
         """

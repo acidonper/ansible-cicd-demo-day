@@ -151,7 +151,7 @@ def main():
         username=dict(type='str', required=True),
         password=dict(type='str', required=True, no_log=True),
         url=dict(type='str', required=True),
-        report=dict(type='dict', required=True, default=None),
+        report=dict(type='dict', required=True),
     )
 
     module = AnsibleModule(

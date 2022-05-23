@@ -62,7 +62,7 @@ def test_publish_report(module_mock):
     })
 
     def __init__(self, argument_spec,
-            supports_check_mode=False):
+        supports_check_mode=False):
         self.argument_spec = argument_spec
         self.supports_check_mode = supports_check_mode
         self.check_mode = True
@@ -72,12 +72,12 @@ def test_publish_report(module_mock):
 
     assert result.value.args[0]['changed'] is True
     assert result.value.args[0]['imported'] == {'assets': {
-                'current': { 
-                    'cash': '14.434$',
-                    'account_receivable': '234.434$',
-                    'inventory': '543.342$',
-                    'total': '792.210$'
-                }, 
-                'long_term': '834.875$',
-                'total': '1.627.085$'
-            }}
+        'current': {
+            'cash': '14.434$',
+            'account_receivable': '234.434$',
+            'inventory': '543.342$',
+            'total': '792.210$'
+        },
+        'long_term': '834.875$',
+        'total': '1.627.085$'
+    }}

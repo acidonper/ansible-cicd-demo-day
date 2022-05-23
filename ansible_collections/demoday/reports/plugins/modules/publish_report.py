@@ -86,6 +86,7 @@ from ansible.module_utils.basic import AnsibleModule
 import requests
 from requests.exceptions import HTTPError
 import json
+import builtins
 
 try:
     from requests import RequestException
@@ -138,10 +139,10 @@ try:
             result['response'].update(response_print)
             result['changed'] = True
         except HTTPError as http_err:
-            print(f'HTTP error occurred: {http_err}')  # Python 3.6
+            builtins.print(f'HTTP error occurred: {http_err}')  # Python 3.6
             module.fail_json(msg=str(http_err), changed=False)
         except Exception as err:
-            print(f'Other error occurred: {err}')  # Python 3.6
+            builtins.print(f'Other error occurred: {err}')  # Python 3.6
             module.fail_json(msg=str(err), changed=False)
 
         # in the event of a successful module execution, you will want to

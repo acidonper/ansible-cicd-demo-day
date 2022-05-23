@@ -52,7 +52,7 @@ EXAMPLES = '''
     username: admin
     password: password
     url: http://api.domain.com/
-    report: 
+    report:
       assets:
         current:
             cash: 14.434$
@@ -109,7 +109,7 @@ try:
         result = dict(
             changed=False,
             response={
-                "data": {  
+                "data": {
                     "assets": {
                         "current": "123.123$",
                         "long_term": "123.123$",
@@ -127,14 +127,14 @@ try:
         api_pass = module.params['password']
         api_url = module.params['url']
 
-        json_data = json.dumps(figures, indent = 4)
+        json_data = json.dumps(figures, indent=4)
         json.loads(json_data)
         headers_req = {'Content-Type': 'application/json'}
 
         try:
-            r = requests.post(api_url, headers=headers_req, auth=(api_user,api_pass), data=json_data)
+            r = requests.post(api_url, headers=headers_req, auth=(api_user, api_pass), data=json_data)
             r.raise_for_status()
-            response_print=json.loads(r.text)
+            response_print = json.loads(r.text)
             result['response'].update(response_print)
             result['changed'] = True
         except HTTPError as http_err:

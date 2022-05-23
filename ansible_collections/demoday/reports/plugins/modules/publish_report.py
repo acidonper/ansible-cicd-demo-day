@@ -83,11 +83,11 @@ imported:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-import requests
-from requests.exceptions import HTTPError
 import json
 
 try:
+    import requests
+    from requests.exceptions import HTTPError
     from requests import RequestException
 
     def run_module():

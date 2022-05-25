@@ -44,9 +44,9 @@ def publish_report_raise_validation_exception(cls, **kwargs):
 
 def test_publish_report(module_mock):
     set_module_args({
-        'username': 'AAAA',
-        'password': 'BBBB',
-        'url': 'localhost',
+        'username': 'admin',
+        'password': 'password',
+        'url': 'appreports-v1-appreports.apps.sts.sandbox385.opentlc.com',
         'report': {
             'assets': {
                 'current': {

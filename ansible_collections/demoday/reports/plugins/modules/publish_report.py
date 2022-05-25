@@ -138,7 +138,7 @@ try:
         module.exit_json(**result)
 
 except ImportError:
-    def run_module():
+    def run_module(module: AnsibleModule):
         pass
 
 
@@ -158,7 +158,7 @@ def main():
         argument_spec=module_args,
         supports_check_mode=True
     )
-    run_module()
+    run_module(module)
 
 
 if __name__ == '__main__':

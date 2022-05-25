@@ -1,6 +1,6 @@
 api_username: admin
 api_password: password
-api_url: appreports-v1-appreports.apps.sts.sandbox385.opentlc.com
+api_url: http://appreports-v1-appreports.apps.sts.sandbox385.opentlc.com
 report: 
   assets:
     current:

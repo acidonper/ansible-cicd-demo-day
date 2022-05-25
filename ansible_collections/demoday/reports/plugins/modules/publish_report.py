@@ -94,7 +94,7 @@ try:
         """
         Method include all execution functions when run from ansible module
         """
-
+        print('run')
         result = dict(
             changed=False,
             response={
@@ -121,15 +121,23 @@ try:
         headers_req = {'Content-Type': 'application/json'}
 
         try:
+            print('1')
             r = requests.post(api_url, headers=headers_req, auth=(api_user, api_pass), data=json_data)
+            print('2')
             r.raise_for_status()
+            print('3')
             response_print = json.loads(r.text)
+            print('4')
             result['response'].update(response_print)
+            print('5')
             result['changed'] = True
+            print('6')
         except HTTPError as http_err:
+            print(f'HTTP error occurred: {http_err}')
             module.log(f'HTTP error occurred: {http_err}')
             module.fail_json(msg=str(http_err), changed=False)
         except Exception as err:
+            print(f'Other error occurred: {http_err}')
             module.log(f'Other error occurred: {err}')
             module.fail_json(msg=str(err), changed=False)
 
@@ -139,6 +147,7 @@ try:
 
 except ImportError:
     def run_module(module: AnsibleModule):
+        print('pass')
         pass
 
 

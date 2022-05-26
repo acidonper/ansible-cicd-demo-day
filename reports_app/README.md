@@ -6,6 +6,24 @@ This repository contains an application based on Javascript to display critical 
 
 - npm +8.3.1 
 
+## Deploy App in Openshift
+
+It is possible to deploy the application in Openshift easily through applying some k8s objects descriptors. Please follow the next step to deploy this application in multiple environments:
+
+- Development
+
+```$bash
+oc new-project dev
+oc apply -f ./openshift/deploy.yaml
+```
+
+- Production
+
+```$bash
+oc new-project pro
+oc apply -f ./openshift/deploy.yaml
+```
+
 ## Test Locally
 
 ## Setting Up
@@ -37,6 +55,7 @@ curl http://localhost:8080/reports/new -H "Content-Type: application/json" -H "a
 
 - Visit the report from a web browser (http://localhost:8080/)
 
-## Author
+
+## Authors
 
 Asier Cidon @redhat

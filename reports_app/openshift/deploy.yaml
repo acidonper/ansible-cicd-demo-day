@@ -1,0 +1,49 @@
+# Source: jump-app/charts/jump-app-micros/templates/jump-app/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: appreports
+    version: v1
+  name: appreports-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appreports
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        name: appreports-v1
+        app: appreports
+        version: v1
+    spec:
+      containers:
+      - image: quay.io/acidonpe/appreports
+      # - image: image-registry.openshift-image-registry.svc:5000/appreport/appreports:develop
+        imagePullPolicy: Always
+        name: appreports-v1
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        resources: {}
+---
+# Source: jump-app/charts/jump-app-micros/templates/jump-app/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: appreports
+    version: v1
+  name: appreports-v1
+spec:
+  ports:
+    - name: http-8080
+      port: 8080
+      protocol: 
+      targetPort: 8080   
+  selector:
+    app: appreports
+    version: v1

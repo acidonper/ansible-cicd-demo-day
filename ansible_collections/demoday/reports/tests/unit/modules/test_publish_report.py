@@ -46,7 +46,7 @@ def test_publish_report(module_mock):
     set_module_args({
         'username': 'admin',
         'password': 'password',
-        'url': 'appreports-v1-appreports.apps.sts.sandbox385.opentlc.com',
+        'url': 'http://appreports-v1-appreports.apps.sts.sandbox385.opentlc.com/reports/new',
         'report': {
             'assets': {
                 'current': {
@@ -69,6 +69,7 @@ def test_publish_report(module_mock):
         with pytest.raises(AnsibleExitJson) as result:
             my_module.main()
 
+    
     assert result.value.args[0]['changed'] is True
     assert result.value.args[0]['imported'] == {'assets': {
         'current': {

@@ -137,7 +137,7 @@ try:
             module.log(f'HTTP error occurred: {http_err}')
             module.fail_json(msg=str(http_err), changed=False)
         except Exception as err:
-            print(f'Other error occurred: {http_err}')
+            print(f'Other error occurred: {err}')
             module.log(f'Other error occurred: {err}')
             module.fail_json(msg=str(err), changed=False)
 

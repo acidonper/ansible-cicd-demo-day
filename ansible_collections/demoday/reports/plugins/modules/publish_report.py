@@ -83,11 +83,21 @@ imported:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.basic import missing_required_lib
+import traceback
 import json
 
-import requests
-from requests.exceptions import HTTPError
-from requests import RequestException
+try:
+
+    import requests
+    from requests.exceptions import HTTPError
+    from requests import RequestException
+
+except ImportError:
+    HAS_ANOTHER_LIBRARY = False
+    ANOTHER_LIBRARY_IMPORT_ERROR = traceback.format_exc()
+else:
+    HAS_ANOTHER_LIBRARY = True
 
 
 def main():
@@ -106,6 +116,12 @@ def main():
         argument_spec=module_args,
         supports_check_mode=True
     )
+
+    if not HAS_ANOTHER_LIBRARY:
+        # Needs: from ansible.module_utils.basic import missing_required_lib
+        module.fail_json(
+            msg=missing_required_lib('another_library'),
+            exception=ANOTHER_LIBRARY_IMPORT_ERROR)
 
     result = dict(
         changed=False,

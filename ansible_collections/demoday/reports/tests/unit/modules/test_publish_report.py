@@ -46,7 +46,7 @@ def test_publish_report(module_mock):
     set_module_args({
         'username': 'admin',
         'password': 'password',
-        'url': 'http://appreports-v1-appreports.apps.sts.sandbox385.opentlc.com/reports/new',
+        'url': 'http://appreports-app-report-dev.apps.aap.sandbox1672.opentlc.com/reports/new',
         'report': {
             'assets': {
                 'current': {

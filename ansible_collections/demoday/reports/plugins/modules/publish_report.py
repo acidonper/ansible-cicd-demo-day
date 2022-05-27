@@ -90,10 +90,23 @@ try:
     from requests.exceptions import HTTPError
     from requests import RequestException
 
-    def run_module(module: AnsibleModule):
+    def main():
         """
-        Method include all execution functions when run from ansible module
+        Method main of class execution
         """
+
+        module_args = dict(
+            username=dict(type='str', required=True),
+            password=dict(type='str', required=True, no_log=True),
+            url=dict(type='str', required=True),
+            report=dict(type='dict', required=True),
+        )
+
+        module = AnsibleModule(
+            argument_spec=module_args,
+            supports_check_mode=True
+        )
+
         print('run')
         result = dict(
             changed=False,
@@ -149,26 +162,6 @@ except ImportError:
     def run_module(module: AnsibleModule):
         print('pass')
         pass
-
-
-def main():
-    """
-    Method main of class execution
-    """
-
-    module_args = dict(
-        username=dict(type='str', required=True),
-        password=dict(type='str', required=True, no_log=True),
-        url=dict(type='str', required=True),
-        report=dict(type='dict', required=True),
-    )
-
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
-    run_module(module)
-
 
 if __name__ == '__main__':
     main()  # pragma: no cover

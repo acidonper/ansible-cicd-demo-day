@@ -149,9 +149,11 @@ try:
         # simple AnsibleModule.exit_json(), passing the key/value results
         module.exit_json(**result)
 
+    if __name__ == '__main__':
+        main()  # pragma: no cover
+
+
 except ImportError:
     def run_module(module: AnsibleModule):
         pass
 
-if __name__ == '__main__':
-    main()  # pragma: no cover

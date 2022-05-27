@@ -46,8 +46,6 @@ def test_publish_report(module_mock):
     with pytest.raises(AnsibleExitJson) as result:
         my_module.main()
 
-
-    
     assert result.value.args[0]['changed'] is True
     assert result.value.args[0]['response']['data'] == {'assets': {
         'current': {

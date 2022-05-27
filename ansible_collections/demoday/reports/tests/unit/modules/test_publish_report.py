@@ -14,24 +14,6 @@ import json
 from requests.exceptions import HTTPError
 
 
-def common_args():
-    set_module_args({
-        'username': 'AAAA',
-        'password': 'BBBB',
-        'url': 'localhost',
-        'report': {
-            'current': {
-                'cash': '14.434$',
-                'account_receivable': '234.434$',
-                'inventory': '543.342$',
-                'total': '792.210$'
-            },
-            'long_term': '834.875$',
-            'total': '1.627.085$'
-        }
-    })
-
-
 def publish_report_mock(cls, **kwargs):
     return {
         "status_code": 200
@@ -64,7 +46,7 @@ def test_publish_report(module_mock):
     def __init__(self, argument_spec, supports_check_mode=False):
         self.argument_spec = argument_spec
         self.supports_check_mode = supports_check_mode
-        self.check_mode = True
+        self.check_mode = False
     with mock.patch.object(AnsibleModule, '__init__', __init__):
         with pytest.raises(AnsibleExitJson) as result:
             my_module.main()

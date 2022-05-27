@@ -1,0 +1,148 @@
+---
+- name: Create GitLab Project
+  hosts: all
+  gather_facts: false
+  vars:
+    gitlab_group_name: ansible-cicd-demo-day
+    gitlab_subgroup_name: demo-day-collections
+    gitlab_template_project_name: template-ansible-collection
+    gitlab_develop_branch: develop
+
+  tasks:
+    - name: "Get GitLab Project Template Information for {{ gitlab_template_project_name }}"
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/{{ gitlab_group_name }}%2F{{ gitlab_template_project_name }}"
+        method: GET
+        status_code:
+          - 200
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ lookup('env', 'GITLAB_PERSONAL_ACCESS_TOKEN') }}"
+      register: gitlab_template_project_info
+
+    - name: "Set GitLab Project Template Project ID for {{ gitlab_template_project_name }}"
+      ansible.builtin.set_fact:
+        gitlab_template_project_id: "{{ gitlab_template_project_info.json.id }}"
+
+    - name: "Get GitLab Group Information for {{ gitlab_subgroup_name }}"
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/groups/{{ gitlab_group_name }}%2F{{ gitlab_subgroup_name }}"
+        method: GET
+        status_code:
+          - 200
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ lookup('env', 'GITLAB_PERSONAL_ACCESS_TOKEN') }}"
+      register: gitlab_namespace_info
+
+    - name: "Set GitLab Group ID for {{ gitlab_subgroup_name }}"
+      ansible.builtin.set_fact:
+        gitlab_namespace_id: "{{ gitlab_namespace_info.json.id }}"
+
+    - name: "Fork {{ gitlab_project_name }} from GitLab Project Template {{ gitlab_template_project_name }}"
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/{{ gitlab_template_project_id }}/fork"
+        method: POST
+        status_code:
+          - 200
+          - 201
+          - 409
+          - 400
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ lookup('env', 'GITLAB_PERSONAL_ACCESS_TOKEN') }}"
+        body: >
+          {
+           "namespace_id": "{{ gitlab_namespace_id }}",
+           "name": "{{ gitlab_project_name }}",
+           "path": "{{ gitlab_project_name }}"
+           }
+      register: gitlab_new_project_info
+   
+    - name: "Set GitLab Project ID for {{ gitlab_project_name }}"
+      ansible.builtin.set_fact:
+        gitlab_new_project_id: "{{ gitlab_new_project_info.json.id }}"
+
+    - name: "Protect GitLab Branch {{ gitlab_develop_branch }} for GitLab Project {{ gitlab_project_name }}"
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/{{ gitlab_new_project_id }}/protected_branches"
+        method: POST
+        status_code:
+          - 200
+          - 201
+          - 409
+          - 400
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ lookup('env', 'GITLAB_PERSONAL_ACCESS_TOKEN') }}"
+        body: >
+          {
+           "id": "{{ gitlab_new_project_id }}",
+           "name": "{{ gitlab_develop_branch }}",
+           "push_access_level": 30,
+           "merge_access_level": 30
+           }
+
+    - name: "Create Hook for GitLab Project {{ gitlab_project_name }}" 
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/{{ gitlab_new_project_id }}/hooks"
+        method: POST
+        status_code:
+          - 200
+          - 201
+          - 409
+          - 400
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ lookup('env', 'GITLAB_PERSONAL_ACCESS_TOKEN') }}"
+        body: >
+          {
+           "id": "{{ gitlab_new_project_id }}",
+           "url": "{{ aap_new_workflow_webhook_url }}",
+           "token": "{{ aap_new_workflow_webhook_key }}",
+           "push_events": "yes",
+           "push_events_branch_filter": "develop",
+           "enable_ssl_verification": "no" 
+           }
+
+    - name: "Get GitLab User information for {{ gitlab_username }}"
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/users?username={{ gitlab_username }}"
+        method: GET
+        status_code:
+          - 200
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ lookup('env', 'GITLAB_PERSONAL_ACCESS_TOKEN') }}"
+      register: gitlab_new_user_info
+
+    - name: "Set GitLab User ID for {{ gitlab_username }}"
+      ansible.builtin.set_fact:
+        gitlab_new_user_id: "{{ gitlab_new_user_info.json[0].id }}"
+  
+    - name: "Add {{ gitlab_username }} as Maintainer to GitLab project {{ gitlab_project_name }}"
+      ansible.builtin.uri:
+        url: "https://gitlab.com/api/v4/projects/{{ gitlab_new_project_id }}/members"
+        method: POST
+        validate_certs: no
+        status_code:
+          - 200
+          - 201
+          - 409
+          - 400
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ lookup('env', 'GITLAB_PERSONAL_ACCESS_TOKEN') }}"
+        body: >
+          {
+           "id": "{{ gitlab_new_project_id }}",
+           "user_id": "{{ gitlab_new_user_id }}",
+           "access_level": 40
+           }

@@ -85,75 +85,68 @@ imported:
 from ansible.module_utils.basic import AnsibleModule
 import json
 
-try:
-    import requests
-    from requests.exceptions import HTTPError
-    from requests import RequestException
+import requests
+from requests.exceptions import HTTPError
+from requests import RequestException
 
-    def main():
-        """
-        Method main of class execution
-        """
+def main():
+    """
+    Method main of class execution
+    """
 
-        module_args = dict(
-            username=dict(type='str', required=True),
-            password=dict(type='str', required=True, no_log=True),
-            url=dict(type='str', required=True),
-            report=dict(type='dict', required=True),
-        )
+    module_args = dict(
+        username=dict(type='str', required=True),
+        password=dict(type='str', required=True, no_log=True),
+        url=dict(type='str', required=True),
+        report=dict(type='dict', required=True),
+    )
 
-        module = AnsibleModule(
-            argument_spec=module_args,
-            supports_check_mode=True
-        )
+    module = AnsibleModule(
+        argument_spec=module_args,
+        supports_check_mode=True
+    )
 
-        result = dict(
-            changed=False,
-            response={
-                "data": {
-                    "assets": {
-                        "current": "123.123$",
-                        "long_term": "123.123$",
-                        "total": "246.246$"
-                    }
+    result = dict(
+        changed=False,
+        response={
+            "data": {
+                "assets": {
+                    "current": "123.123$",
+                    "long_term": "123.123$",
+                    "total": "246.246$"
                 }
             }
-        )
+        }
+    )
 
-        if module.check_mode:
-            module.exit_json(**result)
-
-        figures = module.params['report']
-        api_user = module.params['username']
-        api_pass = module.params['password']
-        api_url = module.params['url']
-
-        json_data = json.dumps(figures, indent=4)
-        json.loads(json_data)
-        headers_req = {'Content-Type': 'application/json'}
-
-        try:
-            r = requests.post(api_url, headers=headers_req, auth=(api_user, api_pass), data=json_data)
-            r.raise_for_status()
-            response_print = json.loads(r.text)
-            result['response'].update(response_print)
-            result['changed'] = True
-        except HTTPError as http_err:
-            module.log(f'HTTP error occurred: {http_err}')
-            module.fail_json(msg=str(http_err), changed=False)
-        except Exception as err:
-            module.log(f'Other error occurred: {err}')
-            module.fail_json(msg=str(err), changed=False)
-
-        # in the event of a successful module execution, you will want to
-        # simple AnsibleModule.exit_json(), passing the key/value results
+    if module.check_mode:
         module.exit_json(**result)
 
-    if __name__ == '__main__':
-        main()  # pragma: no cover
+    figures = module.params['report']
+    api_user = module.params['username']
+    api_pass = module.params['password']
+    api_url = module.params['url']
 
+    json_data = json.dumps(figures, indent=4)
+    json.loads(json_data)
+    headers_req = {'Content-Type': 'application/json'}
 
-except ImportError:
-    def run_module(module: AnsibleModule):
-        pass
+    try:
+        r = requests.post(api_url, headers=headers_req, auth=(api_user, api_pass), data=json_data)
+        r.raise_for_status()
+        response_print = json.loads(r.text)
+        result['response'].update(response_print)
+        result['changed'] = True
+    except HTTPError as http_err:
+        module.log(f'HTTP error occurred: {http_err}')
+        module.fail_json(msg=str(http_err), changed=False)
+    except Exception as err:
+        module.log(f'Other error occurred: {err}')
+        module.fail_json(msg=str(err), changed=False)
 
+    # in the event of a successful module execution, you will want to
+    # simple AnsibleModule.exit_json(), passing the key/value results
+    module.exit_json(**result)
+
+if __name__ == '__main__':
+    main()  # pragma: no cover

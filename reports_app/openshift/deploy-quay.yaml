@@ -1,11 +1,10 @@
-# Source: jump-app/charts/jump-app-micros/templates/jump-app/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: appreports
     version: v1
-  name: appreports-v1
+  name: appreports
 spec:
   replicas: 1
   selector:
@@ -16,28 +15,26 @@ spec:
       annotations:
         sidecar.istio.io/inject: "true"
       labels:
-        name: appreports-v1
+        name: appreports
         app: appreports
         version: v1
     spec:
       containers:
       - image: quay.io/acidonpe/appreports
-      # - image: image-registry.openshift-image-registry.svc:5000/appreport/appreports:develop
         imagePullPolicy: Always
-        name: appreports-v1
+        name: appreports
         ports:
           - containerPort: 8080
             protocol: TCP
         resources: {}
 ---
-# Source: jump-app/charts/jump-app-micros/templates/jump-app/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   labels:
     app: appreports
     version: v1
-  name: appreports-v1
+  name: appreports
 spec:
   ports:
     - name: http-8080
@@ -47,3 +44,15 @@ spec:
   selector:
     app: appreports
     version: v1
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: appreports
+spec:
+  to:
+    kind: Service
+    name: appreports
+  port:
+    targetPort: 8080
+  wildcardPolicy: None

@@ -8,20 +8,66 @@ This repository contains an application based on Javascript to display critical 
 
 ## Deploy App in Openshift
 
-It is possible to deploy the application in Openshift easily through applying some k8s objects descriptors. Please follow the next step to deploy this application in multiple environments:
+### Build
+
+First of all, it is required to build the application container image in order to be able to deploy it in Openshift. 
+
+In order to build this container image using out-of-the-box Openshift tools, it is possible to follow the next procedure:
+
+- Create de CICD namespace and the respective resources
+
+```$bash
+oc new-project app-report-cicd
+
+oc apply -f ./openshift/build.yaml -n app-report-cicd
+```
+
+- Execute the container image build process
+
+```$bash
+oc start-build appreports -n app-report-cicd
+
+oc get build -n app-report-cicd
+NAME           TYPE     FROM          STATUS     STARTED              DURATION
+appreports-1   Source   Git@052b631   Complete   About a minute ago   1m5s
+```
+
+### Deployment
+
+It is possible to deploy the application in Openshift easily through applying some k8s objects descriptors once the container image has been built. 
+
+Please follow the next step to deploy this application in multiple environments:
 
 - Development
 
 ```$bash
-oc new-project dev
-oc apply -f ./openshift/deploy.yaml
+oc new-project app-report-dev
+
+oc apply -f ./openshift/deploy-internal.yaml -n app-report-dev
+
+oc get pod -n app-report-dev
+NAME                          READY   STATUS    RESTARTS   AGE
+appreports-79f7c74c64-2gx2p   1/1     Running   0          12m
+
+oc get route -n app-report-dev
+NAME         HOST/PORT                                                    PATH   SERVICES     PORT   TERMINATION   WILDCARD
+appreports   appreports-app-report-dev.apps.aap.sandbox1672.opentlc.com          appreports   8080                 None
 ```
 
 - Production
 
 ```$bash
-oc new-project pro
-oc apply -f ./openshift/deploy.yaml
+oc new-project app-report-pro
+
+oc apply -f ./openshift/deploy-internal.yaml -n app-report-pro
+
+oc get pod -n app-report-pro
+NAME                          READY   STATUS    RESTARTS   AGE
+appreports-79f7c74c64-bmpwq   1/1     Running   0          1m
+
+oc get route -n app-report-pro
+NAME         HOST/PORT                                                    PATH   SERVICES     PORT   TERMINATION   WILDCARD
+appreports   appreports-app-report-pro.apps.aap.sandbox1672.opentlc.com          appreports   8080                 None
 ```
 
 ## Test Locally

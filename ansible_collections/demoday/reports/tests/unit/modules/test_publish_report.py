@@ -49,13 +49,13 @@ def test_publish_report(module_mock):
 
     
     assert result.value.args[0]['changed'] is True
-    assert result.value.args[0]['imported'] == {'assets': {
+    assert result.value.args[0]['response']['data'] == {'assets': {
         'current': {
-            'cash': '14.434$',
-            'account_receivable': '234.434$',
-            'inventory': '543.342$',
-            'total': '792.210$'
+            'cash': '104.434$',
+            'account_receivable': '23.434$',
+            'inventory': '54.342$',
+            'total': '72.210$'
         },
-        'long_term': '834.875$',
-        'total': '1.627.085$'
+        'long_term': '83.875$',
+        'total': '627.085$'
     }}

@@ -13,7 +13,7 @@
     <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
-    <title> BUSINESS REPORTS VIEWER </title>
+    <title>MY BUSINESS REPORT</title>
     <!--REQUIRED STYLE SHEETS-->
     <!-- BOOTSTRAP CORE STYLE CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
@@ -37,25 +37,12 @@
 </head>
 <body class="cbp-spmenu-push">
 
-    <!-- MAIN HEADING-->
-    <div class="for-full-back color-bg-one" id="main-sec">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-8 col-md-offset-2 ">
-                    <h1 class="pad-adjust"><i class="fa faa-pulse animated"></i>COMPANY ASSETS REPORT</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--END MAIN HEADING-->
     <!--LEFT SLIDE MENU-->
     <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
-        <h3>BIWAS</h3>
-        <a href="#">Call: +01-099-908-908</a>
-        <a href="#main-sec"><i class="fa fa-home fa-3x"></i>HOME</a>
-        <a href="#about-sec"><i class="fa fa-microphone fa-3x"></i>ABOUT</a>
-        <a href="#price-sec"><i class="fa fa-dollar fa-3x"></i>PRICING</a>
-        <a href="#services-sec"><i class="fa fa-rocket fa-3x"></i>SERVICES</a>
+        <h3>MENU</h3>
+        <a href="#price-sec"><i class="fa fa-dollar fa-3x"></i>REPORTS</a>
+        <a href="#about-sec"><i class="fa fa-microphone fa-3x"></i>TEAM</a>
+        <a href="#services-sec"><i class="fa fa-rocket fa-3x"></i>GOALS</a>
         <a href="#contact-sec"><i class="fa fa-globe fa-3x"></i>CONTACT</a>
     </nav>
 
@@ -69,11 +56,9 @@
     <!--RIGHT SLIDE MENU-->
     <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
         <h3>SOCIAL</h3>
-        <a href="#">MY SOCIAL PRESENCE</a>
-        <a href="#"><i class="fa fa-facebook fa-3x"></i>Facebook</a>
-        <a href="#"><i class="fa fa-twitter fa-3x"></i>Twitter</a>
-        <a href="#"><i class="fa fa-linkedin fa-3x"></i>Linked In</a>
-        <a href="#"><i class="fa fa-google-plus fa-3x"></i>Google Plus</a>
+        <a href="https://twitter.com/RedHat"><i class="fa fa-twitter fa-3x"></i>Twitter</a>
+        <a href="https://www.linkedin.com/company/red-hat"><i class="fa fa-linkedin fa-3x"></i>LinkedIn</a>
+        <a href="https://www.redhat.com"><i class="fa fa-globe fa-3x"></i>Web</a>
     </nav>
 
     <div class="row" id="icon-right">
@@ -83,15 +68,37 @@
     </div>
     <!--END RIGHT SLIDE MENU-->
 
-    <!--HOME SECTION-->
-    <div class="container" id="home">
-        <div class="row text-center">
-            <div class="col-md-12">
-                <span class="head-main">NOW OR NEVER</span>
+    <!--PRICE SECTION-->
+    <section id="price-sec">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-12 ">
+                    <div class="col-md-4">
+                        <ul class="plan">
+                            <li class="plan-head c-b">CURRENT ASSETS</li>
+                            <li class="main-price">{{currenttotal}}</li>
+                            <li><strong>Cash </strong>{{currentcash}}</li>
+                            <li><strong>Account Receivable </strong>{{currentaccount}}</li>
+                            <li><strong>Inventory </strong>{{curreninventory}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="plan">
+                            <li class="plan-head">LONG TERM ASSETS</li>
+                            <li class="main-price">{{long_term}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="plan">
+                            <li class="plan-head c-v">TOTAL ASSETS</li>
+                            <li class="main-price">{{total}}</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <!--END HOME SECTION-->
+    </section>
+    <!-- END PRICE SECTION-->
 
     <!--ABOUT SECTION-->
     <section class="for-full-back color-bg-one" id="about-sec">
@@ -165,53 +172,20 @@
     </section>
     <!--END ABOUT SECTION-->
 
-    <!--PRICE SECTION-->
-    <section id="price-sec">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12 ">
-                    <div class="col-md-4">
-                        <ul class="plan">
-                            <li class="plan-head c-b">CURRENT ASSETS</li>
-                            <li class="main-price">{{currenttotal}}</li>
-                            <li><strong>Cash </strong>{{currentcash}}</li>
-                            <li><strong>Account Receivable </strong>{{currentaccount}}</li>
-                            <li><strong>Inventory </strong>{{curreninventory}}</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <ul class="plan">
-                            <li class="plan-head">LONG TERM ASSETS</li>
-                            <li class="main-price">{{long_term}}</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <ul class="plan">
-                            <li class="plan-head c-v">TOTAL ASSETS</li>
-                            <li class="main-price">{{total}}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </section>
-    <!-- END PRICE SECTION-->
-
     <!--SERVICES SECTION-->
     <section class="for-full-back color-bg-one" id="services-sec">
         <div class="container">
             <div class="row text-center">
                 <div class="col-md-8 col-md-offset-2 ">
-                    <h1><i class="fa fa-rocket faa-pulse animated  "></i>Services</h1>
+                    <h1><i class="fa fa-rocket faa-pulse animated  "></i>Goals</h1>
 
                 </div>
                 <div class="row text-center">
                     <div class="col-md-8 col-md-offset-2 ">
                         <h4>
-                            <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                         Curabitur nec nisl odio. Mauris vehicula at nunc id posuere.
+                            <strong>
+                                Enable teams to release a constant flow of software updates into production to quicken 
+                                release cycles, lower costs, and reduce the risks associated with development
                             </strong>
                         </h4>
                     </div>
@@ -226,40 +200,41 @@
                     <div class="col-md-3 ">
                         <div class="service-div">
                             <i class="fa fa-desktop fa-5x faa-vertical animated"></i>
-                            <h4>Sure Quique Menu </h4>
+                            <h4>Be focus on Products</h4>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                         Curabitur nec nisl odio. Mauris vehicula at nunc id posuere.
+                                Take care of the company's strategic vision by stating 
+                                where the products are going, how they will get there and 
+                                why they will succeed
                             </p>
                         </div>
                     </div>
                     <div class="col-md-3 ">
                         <div class="service-div">
                             <i class="fa fa-flask fa-5x faa-ring animated"></i>
-                            <h4>100% Free Responsive </h4>
+                            <h4>Avoid, or accelerate, issues</h4>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                         Curabitur nec nisl odio. Mauris vehicula at nunc id posuere.
+                                Become aware of technical issues as fast as possible in 
+                                the release process in order to fix them quickly and more efficiently
                             </p>
                         </div>
                     </div>
                     <div class="col-md-3 ">
                         <div class="service-div">
                             <i class="fa fa-plus fa-5x faa-float animated"></i>
-                            <h4>Well Documented </h4>
+                            <h4>Test & Test Apps</h4>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                         Curabitur nec nisl odio. Mauris vehicula at nunc id posuere.
+                                Be sure the Apps comply with quality and performance rules with every 
+                                new release or change that has been committed
                             </p>
                         </div>
                     </div>
                     <div class="col-md-3 ">
                         <div class="service-div">
                             <i class="fa fa-credit-card fa-5x faa-shake animated"></i>
-                            <h4>Clean & Customizable </h4>
+                            <h4>Reduce Time To Market</h4>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                         Curabitur nec nisl odio. Mauris vehicula at nunc id posuere.
+                                Deliver product's releases faster in order to improve customer 
+                                satisfaction and innovation processes
                             </p>
                         </div>
                     </div>
@@ -274,7 +249,7 @@
             <div class="row ">
                 <div class="col-md-3 ">
                     <div class="stats-div">
-                        <h3>5000+ </h3>
+                        <h3>M+ </h3>
                         <h4>Projects</h4>
                     </div>
                 </div>
@@ -282,7 +257,7 @@
 
                 <div class="col-md-3 ">
                     <div class="stats-div">
-                        <h3>205+ </h3>
+                        <h3>40+ </h3>
                         <h4>Countries</h4>
                     </div>
 
@@ -290,13 +265,13 @@
                 <div class="col-md-3 ">
 
                     <div class="stats-div">
-                        <h3>1300+ </h3>
+                        <h3>100+ </h3>
                         <h4>Offices</h4>
                     </div>
                 </div>
                 <div class="col-md-3 ">
                     <div class="stats-div">
-                        <h3>2400+ </h3>
+                        <h3>K+ </h3>
                         <h4>Clients</h4>
                     </div>
                 </div>
@@ -315,8 +290,8 @@
                 <div class="row text-center">
                     <div class="col-md-8 col-md-offset-2 ">
                         <h4>
-                            <strong>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                         Curabitur nec nisl odio. Mauris vehicula at nunc id posuere.
+                            <strong>
+                                
                             </strong>
                         </h4>
                     </div>
@@ -327,51 +302,18 @@
     <section class="for-full-back color-white " id="contact-inner">
         <div class="container">
             <div class="row">
-                <div class="col-md-5 contact-cls">
+                <div class="col-md-12 contact-cls">
                     <h2>GET IN TOUCH</h2>
                     <div>
-                        <span><i class="fa fa-home"></i>Address: New Your City</span>
+                        <span><i class="fa fa-home"></i>Address: 100 E. Davie Street, Raleigh, NC 27601, USA</span>
                         <br />
-                        <span><i class="fa fa-phone"></i>Phone: 82-230-567-899</span>
+                        <span><i class="fa fa-phone"></i>Phone: 1-888-RED-HAT1</span>
                         <br />
-                        <span><i class="fa fa-envelope-o"></i>indo@yourdomain.com</span>
+                        <span><i class="fa fa-envelope-o"></i>www.redhat.com/en/contact</span>
                         <br />
-                        <span><i class="fa fa-globe"></i>www.yourdomain.com</span>
+                        <span><i class="fa fa-globe"></i>www.redhat.com</span>
                         <br />
                     </div>
-                </div>
-                <div class="col-md-7">
-                    <h2>Lorem ipsum dolor sit amet</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                         Curabitur nec nisl odio. Mauris vehicula at nunc id posuere.
-                           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                         Curabitur nec nisl odio. Mauris vehicula at nunc id posuere.              
-                    </p>
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" required="required" placeholder="Name">
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" required="required" placeholder="Email address">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    <textarea name="message" id="message" required="required" class="form-control" rows="3" placeholder="Message"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-default">Submit Request</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -385,25 +327,25 @@
                 <div class="col-md-3 ">
                     <div class="social-stats-div">
                         <i class="fa fa-facebook fa-5x "></i>
-                        <h3>2000+ Followers </h3>
+                        <h3>241K+ Followers </h3>
                     </div>
                 </div>
                 <div class="col-md-3 ">
                     <div class="social-stats-div">
                         <i class="fa fa-twitter fa-5x "></i>
-                        <h3>1900+ Tweets </h3>
+                        <h3>1K+ Tweets </h3>
                     </div>
                 </div>
                 <div class="col-md-3 ">
                     <div class="social-stats-div">
-                        <i class="fa fa-google-plus fa-5x "></i>
-                        <h3>1530+ Followers </h3>
+                        <i class="fa fa-globe fa-5x "></i>
+                        <h3>1M+ Followers </h3>
                     </div>
                 </div>
                 <div class="col-md-3 ">
                     <div class="social-stats-div">
                         <i class="fa fa-linkedin fa-5x "></i>
-                        <h3>3000+ Connections </h3>
+                        <h3>1.1M+ Connections </h3>
                     </div>
                 </div>
             </div>
@@ -413,7 +355,7 @@
 
     <!--FOOTER SECTION -->
     <div class="for-full-back color-bg-one" id="footer">
-        2014 www.yourdomain.com | All Right Reserved | Terms | Policies | Licenses 
+        2021 www.redhat.com | All Right Reserved | Terms | Policies | Licenses 
          
     </div>
     <!-- END FOOTER SECTION -->

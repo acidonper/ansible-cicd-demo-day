@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: appreports
+    version: v1
+  name: appreports
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appreports
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        name: appreports
+        app: appreports
+        version: v1
+    spec:
+      containers:
+      - image: quay.io/acidonpe/appreports
+        imagePullPolicy: Always
+        name: appreports
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: appreports
+    version: v1
+  name: appreports
+spec:
+  ports:
+    - name: http-8080
+      port: 8080
+      protocol: 
+      targetPort: 8080   
+  selector:
+    app: appreports
+    version: v1
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: appreports
+spec:
+  to:
+    kind: Service
+    name: appreports
+  port:
+    targetPort: 8080
+  wildcardPolicy: None

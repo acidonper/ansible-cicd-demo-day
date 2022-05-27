@@ -1,8 +1,8 @@
 # Ansible Automation Platform Configuration as a Code
 
-Red Hat Ansible Automation Platform configuration as a Code includes a procedure to configure an Ansible Automation Platform installation creating and configuring some objects through a programmatic procedure. 
+_Red Hat Ansible Automation Platform__ configuration as a Code includes a procedure to configure an _Ansible Automation Platform_ installation creating and configuring some objects through a programmatic procedure. 
 
-The following list includes the Ansible Automation Platform's elements which can be created and configured in this procedure:
+The following list includes the _Ansible Automation Platform_'s elements which can be created and configured in this procedure:
 
 -   Organization
 -   Users
@@ -15,11 +15,11 @@ The following list includes the Ansible Automation Platform's elements which can
 
 ## Configurable Resources
 
-In order to create the objects which have been included above, It is required to include their definition in a variables file and configure the inventory file in order to link the Ansible Automation Platform installation.
+In order to create the objects which have been included above, It is required to include their definition in a variables file and configure the inventory file in order to link the _Ansible Automation Platform_ installation.
 
 ### vars
 
--   aap-config.yml -> Configuration as a code file which includes organization, users, teams, projects, credentials and Job Template definitions. On the other hand, includes connection parameters to Ansible Automation Platform Cluster installed.
+-   aap-config.yml -> Configuration as a code file which includes organization, users, teams, projects, credentials and Job Template definitions. On the other hand, includes connection parameters to _Ansible Automation Platform_ Cluster installed.
 
 ## Requirements
 
@@ -36,23 +36,23 @@ The programmatic procedure includes both the creation and deletion of the object
 
 ### Playbooks
 
--   aap-configuration-deploy.yml -> Using aap-config.yml file, deploy all items in Ansible Automation Platform
--   aap-configuration-undeploy.yml -> Using aap-config.yml file, delete all items in Ansible Automation Platform
+-   aap-configuration-deploy.yml -> Using aap-config.yml file, deploy all items in _Ansible Automation Platform_
+-   aap-configuration-undeploy.yml -> Using aap-config.yml file, delete all items in _Ansible Automation Platform_
 
 ### Examples
 
--   Deploy Red Hat Ansible Automation Platform programmatic configuration
+-   Deploy Red Hat _Ansible Automation Platform_ programmatic configuration
 ```
 $ ansible-playbook aap-configuration-deploy.yml
 ```
 
--   Delete Red Hat Ansible Automation Platform programmatic configuration
+-   Delete Red Hat _Ansible Automation Platform_ programmatic configuration
 ```
 $ ansible-playbook aap-configuration-undeploy.yml
 ```
 
-## Author
+## Authors
 
-Asier Cidon @RedHat
-
-
+- Asier Cidon @RedHat
+- Cesar Fernandez @RedHat
+- Alejandro de la Hoz @RedHat

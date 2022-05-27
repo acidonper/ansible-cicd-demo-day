@@ -1,0 +1,46 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: appreports 
+spec: {}
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: appreports
+  name: appreports
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: appreports:develop
+  postCommit: {}
+  resources: {}
+  source:
+    git:
+      uri: https://github.com/acidonper/ansible-cicd-demo-day.git
+      ref: master
+    type: Git
+    contextDir: "reports_app" 
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: nodejs:latest
+        namespace: openshift
+    type: Source
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: image-pullers-everyone
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:image-puller
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: system:serviceaccounts

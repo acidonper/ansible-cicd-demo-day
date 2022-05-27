@@ -89,6 +89,7 @@ import requests
 from requests.exceptions import HTTPError
 from requests import RequestException
 
+
 def main():
     """
     Method main of class execution
@@ -147,6 +148,7 @@ def main():
     # in the event of a successful module execution, you will want to
     # simple AnsibleModule.exit_json(), passing the key/value results
     module.exit_json(**result)
+
 
 if __name__ == '__main__':
     main()  # pragma: no cover

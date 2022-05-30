@@ -36,11 +36,11 @@ scm_jobtemplates:
     project: "Ansible CI/CD"
     playbook: "ansible_tools/playbooks/00-unittests.yml"
     creds: []
-  - name: "[JT][CICD] Publish Hub"
+  - name: "[JT][CICD] Publish Collection to Automation Hub"
     org: Default
     inv: Dev
     project: "Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/01-publish-hub.yml"
+    playbook: "ansible_tools/playbooks/publish_collection_hub.yml"
     creds: []
   - name: "[JT][CICD] Promotion DEV -> PRO"
     org: Default
@@ -83,7 +83,7 @@ scm_workflowjobtemplates:
         unified_job_template:
           organization:
             name: Default
-          name: "[JT][CICD] Publish Hub"
+          name: "[JT][CICD] Publish Collection to Automation Hub"
           type: job_template
         credentials: []
         related:

@@ -117,9 +117,13 @@ scm_workflowjobtemplates:
           failure_nodes: []
           always_nodes: []
           credentials: [] 
+
+scm_workflowjobtemplates_survey:
   - name: "[WF][CICD] Onboarding new project"
     org: Default
     inv: Demo Inventory
+    survey_enabled: yes
+    survey_spec: "{{ lookup('file', 'survey_specs/onboarding-new-project-survey.json') }}"
     steps:
       - identifier: node101
         unified_job_template:

@@ -1,0 +1,37 @@
+{
+    "name": "",
+    "description": "",
+    "spec": [
+        {
+            "question_name": "GitLab Username",
+            "question_description": "",
+            "required": true,
+            "type": "text",
+            "variable": "gitlab_username",
+            "min": 0,
+            "max": 1024,
+            "default": "",
+            "choices": "",
+            "formattedChoices": [
+                {
+                    "choice": "",
+                    "isDefault": false,
+                    "id": 0
+                }
+            ],
+            "new_question": false
+        },
+        {
+            "question_name": "New Project Name",
+            "question_description": "",
+            "required": true,
+            "type": "text",
+            "variable": "gitlab_project_name",
+            "min": 0,
+            "max": 1024,
+            "default": "",
+            "choices": "",
+            "new_question": true
+        }
+    ]
+}

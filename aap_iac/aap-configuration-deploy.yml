@@ -212,3 +212,21 @@
       when:
         - scm_workflowjobtemplates is defined
         - scm_workflowjobtemplates|length > 0
+
+    - name: Create AAP Workflow Job Templates with Survey
+      ansible.controller.workflow_job_template:
+        name: "{{ item.name }}"
+        organization: "{{ item.org }}"
+        inventory: "{{ item.inv }}"
+        schema: "{{ item.steps }}"
+        survey_enabled: "{{ item.survey_enabled }}"
+        survey_spec: "{{ item.survey_spec }}"
+        state: present
+        validate_certs: no
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
+      loop: "{{ scm_workflowjobtemplates_survey }}"
+      when:
+        - scm_workflowjobtemplates_survey is defined
+        - scm_workflowjobtemplates_survey|length > 0

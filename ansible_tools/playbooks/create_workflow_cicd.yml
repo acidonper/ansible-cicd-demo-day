@@ -21,6 +21,7 @@
         url: "{{ lookup('env', 'CONTROLLER_HOST') }}/api/v2/workflow_job_templates/{{ aap_new_workflow_id }}/webhook_key/"
         user: "{{ lookup('env', 'CONTROLLER_USERNAME') }}"
         password: "{{ lookup('env', 'CONTROLLER_PASSWORD') }}"
+        force_basic_auth: yes
         method: GET
         return_content: yes
         status_code:

@@ -1,0 +1,5 @@
+{
+  "env": {
+    "GITLAB_PERSONAL_ACCESS_TOKEN": "{{ gitlab_acces_token }}"
+  }
+}

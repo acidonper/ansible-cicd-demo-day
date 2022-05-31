@@ -1,0 +1,13 @@
+{
+  "fields": [
+    {
+      "id": "gitlab_acces_token",
+      "type": "string",
+      "label": "GitLab Personal Access Token",
+      "secret": true
+    }
+  ],
+  "required": [
+    "gitlab_acces_token"
+  ]
+}

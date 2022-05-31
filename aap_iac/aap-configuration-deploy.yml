@@ -10,7 +10,7 @@
   tasks:
 
     - name: Create AAP organizations
-      awx.awx.organization:
+      ansible.controller.organization:
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
         state: present
@@ -24,7 +24,7 @@
         - organizations|length > 0
 
     - name: Create AAP teams
-      awx.awx.team:
+      ansible.controller.team:
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
         organization: "{{ item.org }}"
@@ -39,7 +39,7 @@
         - teams|length > 0
 
     - name: Create AAP Users
-      awx.awx.user:
+      ansible.controller.user:
         username: "{{ item.username }}"
         password: "{{ item.password }}"
         email: "{{ item.email }}"
@@ -55,7 +55,7 @@
         - users|length > 0
 
     - name: Add AAP Users to organization 
-      awx.awx.role:
+      ansible.controller.role:
         user: "{{ item.username }}"
         role: "{{ item.role }}"
         organization: "{{ item.org }}"
@@ -70,7 +70,7 @@
         - users|length > 0
 
     - name: Create AAP admin Users
-      awx.awx.user:
+      ansible.controller.user:
         username: "{{ item.username }}"
         password: "{{ item.password }}"
         email: "{{ item.email }}"
@@ -87,7 +87,7 @@
         - admin_users|length > 0
 
     - name: Create AAP auditor Users
-      awx.awx.user:
+      ansible.controller.user:
         username: "{{ item.username }}"
         password: "{{ item.password }}"
         email: "{{ item.email }}"
@@ -104,7 +104,7 @@
         - auditor_users|length > 0
 
     - name: Create AAP Inventories
-      awx.awx.inventory:
+      ansible.controller.inventory:
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
         organization: "{{ item.org }}"
@@ -118,13 +118,31 @@
         - inventories is defined
         - inventories|length > 0
 
-    - name: Create Credentials
-      awx.awx.credential:
+    - name: Create Credential Types
+      ansible.controller.credential_type:
         name: "{{ item.name }}"
+        kind: "{{ item.kind }}"
+        inputs: "{{ item.inputs }}"
+        injectors: "{{ item.injectors }}"
+        state: present
+        validate_certs: false
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
+      loop: "{{ scm_credential_types }}"
+      when:
+        - scm_credential_types is defined
+        - scm_credential_types|length > 0
+
+    - name: Create Credentials
+      ansible.controller.credential:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
         organization: "{{ item.org }}"
         credential_type: "{{ item.type }}"
         update_secrets: false
         inputs:
+          host: "{{ item.host }}"
           username: "{{ item.user }}"
           password: "{{ item.pass }}"
         state: present
@@ -138,7 +156,7 @@
         - scm_credentials|length > 0
 
     - name: Create SCM Projects
-      awx.awx.project:
+      ansible.controller.project:
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
         organization: "{{ item.org }}"
@@ -160,7 +178,7 @@
         - scm_projects|length > 0
 
     - name: Create AAP Job Templates
-      awx.awx.job_template:
+      ansible.controller.job_template:
         name: "{{ item.name }}"
         job_type: "run"
         organization: "{{ item.org }}"
@@ -180,7 +198,7 @@
 
 
     - name: Create AAP Workflow Job Templates
-      awx.awx.workflow_job_template:
+      ansible.controller.workflow_job_template:
         name: "{{ item.name }}"
         organization: "{{ item.org }}"
         inventory: "{{ item.inv }}"

@@ -19,6 +19,8 @@
     - name: Get Workflow Job Template Webhook
       ansible.builtin.uri:
         url: "{{ lookup('env', 'CONTROLLER_HOST') }}/api/v2/workflow_job_templates/{{ aap_new_workflow_id }}/webhook_key/"
+        user: "{{ lookup('env', 'CONTROLLER_USERNAME') }}"
+        password: "{{ lookup('env', 'CONTROLLER_PASSWORD') }}"
         method: GET
         return_content: yes
         status_code:
@@ -26,7 +28,7 @@
         body_format: json
         headers:
           Content-Type: application/json
-          Authorization: "Bearer {{ lookup('env', 'CONTROLLER_OAUTH_TOKEN') }}"
+          # Authorization: "Bearer {{ lookup('env', 'CONTROLLER_OAUTH_TOKEN') }}"
         validate_certs: "{{ lookup('env', 'CONTROLLER_VERIFY_SSL') }}"
       register: aap_new_workflow_webhook
   

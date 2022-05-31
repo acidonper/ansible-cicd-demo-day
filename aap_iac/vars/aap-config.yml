@@ -20,7 +20,7 @@ inventories:
     org: Default
 
 scm_credential_types:
-  - name: "GitLab Personal Access Token"
+  - name: "GitLab Access Token"
     kind: cloud
     inputs: "{{ lookup('file', 'credential_types/gitlab_acces_token_inputs.json') }}"
     injectors: "{{ lookup('file', 'credential_types/gitlab_acces_token_injectors.json') }}"
@@ -46,31 +46,31 @@ scm_jobtemplates:
   - name: "[JT][CICD] Unit Tests"
     org: Default
     inv: Dev
-    project: "Ansible CI/CD"
+    project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/00-unittests.yml"
     creds: []
   - name: "[JT][CICD] Publish Collection to Automation Hub"
     org: Default
     inv: Dev
-    project: "Ansible CI/CD"
+    project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/publish_collection_hub.yml"
     creds: []
   - name: "[JT][CICD] Promotion DEV -> PRO"
     org: Default
     inv: Dev
-    project: "Ansible CI/CD"
+    project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/02-promotion.yml"
     creds: []
   - name: "[JT][CICD] Create new Pipeline from Template"
     org: Default
-    inv: Dev
-    project: "Ansible CI/CD"
+    inv: Demo Inventory
+    project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/create_workflow_cicd.yml"
     creds: "[CICD] Red Hat Ansible Automation Platform Credential"
   - name: "[JT][CICD] Create new GitLab Project"
     org: Default
-    inv: Dev
-    project: "Ansible CI/CD"
+    inv: Demo Inventory
+    project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
     creds: []
 
@@ -119,7 +119,7 @@ scm_workflowjobtemplates:
           credentials: [] 
   - name: "[WF][CICD] Onboarding new project"
     org: Default
-    inv: Dev
+    inv: Demo Inventory
     steps:
       - identifier: node101
         unified_job_template:

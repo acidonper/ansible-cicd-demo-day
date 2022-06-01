@@ -198,7 +198,7 @@ scm_workflowjobtemplates_survey:
     survey_enabled: yes
     survey_spec: "{{ lookup('file', 'survey_specs/onboarding-new-project-survey.json') }}"
     steps:
-      - identifier: node101
+      - identifier: Create new Pipeline from Template
         unified_job_template:
           organization:
             name: Default
@@ -207,11 +207,11 @@ scm_workflowjobtemplates_survey:
         credentials: []
         related:
           success_nodes:
-            - identifier: node201
+            - identifier: Create new GitLab Project
           failure_nodes: []
           always_nodes: []
           credentials: []
-      - identifier: node201
+      - identifier: Create new GitLab Project
         unified_job_template:
           organization:
             name: Default

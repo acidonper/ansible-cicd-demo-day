@@ -19,6 +19,16 @@ inventories:
     desc: "Development Inventory"
     org: Default
 
+hosts: 
+  - name: localhost
+    desc: "Local Host Group"
+    org: Default
+    vars: '{"ansible_connection": "local"}'
+
+execution_enviroment: 
+  - name: ansible-ee-ansible-test
+    desc: quay.io/adelahoz/ansible-ee-ansible-test
+
 scm_credential_types:
   - name: "GitLab Access Token"
     kind: cloud
@@ -43,56 +53,114 @@ scm_projects:
     git_cred: ""
 
 scm_jobtemplates:
-  - name: "[JT][CICD] Unit Tests"
+  - name: "[JT][CICD] Sanity Tests"
     org: Default
     inv: Dev
     project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/00-unittests.yml"
+    playbook: "ansible_tools/playbooks/00-sanity.yml"
     creds: []
+    execution_environment: "ansible-ee-ansible-test"
+    survey_enabled: yes
+    survey_spec: '{"name":"","description":"","spec":[{"question_name":"Add collection git repository url","question_description":"Collection Git repository URL","required":true,"type":"text","variable":"gitlab_repository","min":0,"max":1024,"default":"","choices":"","formattedChoices":[{"choice":"","isDefault":false,"id":0}],"new_question":false},{"question_name":"Add collection git repository branch","question_description":"Collection Git repository branch","required":true,"type":"text","variable":"gitlab_branch","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add namespace collection","question_description":"Name of namespace collection","required":true,"type":"text","variable":"ansible_namespace","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add name collection","question_description":"name of collection","required":true,"type":"text","variable":"ansible_collection","min":0,"max":1024,"default":"","choices":"","new_question":true}]}'
+  - name: "[JT][CICD] Units Tests"
+    org: Default
+    inv: Dev
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/00-units.yml"
+    creds: []
+    execution_environment: "ansible-ee-ansible-test"
+    survey_enabled: yes
+    survey_spec: '{"name":"","description":"","spec":[{"question_name":"Add collection git repository url","question_description":"Collection Git repository URL","required":true,"type":"text","variable":"gitlab_repository","min":0,"max":1024,"default":"","choices":"","formattedChoices":[{"choice":"","isDefault":false,"id":0}],"new_question":false},{"question_name":"Add collection git repository branch","question_description":"Collection Git repository branch","required":true,"type":"text","variable":"gitlab_branch","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add namespace collection","question_description":"Name of namespace collection","required":true,"type":"text","variable":"ansible_namespace","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add name collection","question_description":"name of collection","required":true,"type":"text","variable":"ansible_collection","min":0,"max":1024,"default":"","choices":"","new_question":true}]}'
+  - name: "[JT][CICD] Integration Tests"
+    org: Default
+    inv: Dev
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/00-integration.yml"
+    creds: []
+    execution_environment: "ansible-ee-ansible-test"
+    survey_enabled: yes
+    survey_spec: '{"name":"","description":"","spec":[{"question_name":"Add collection git repository url","question_description":"Collection Git repository URL","required":true,"type":"text","variable":"gitlab_repository","min":0,"max":1024,"default":"","choices":"","formattedChoices":[{"choice":"","isDefault":false,"id":0}],"new_question":false},{"question_name":"Add collection git repository branch","question_description":"Collection Git repository branch","required":true,"type":"text","variable":"gitlab_branch","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add namespace collection","question_description":"Name of namespace collection","required":true,"type":"text","variable":"ansible_namespace","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add name collection","question_description":"name of collection","required":true,"type":"text","variable":"ansible_collection","min":0,"max":1024,"default":"","choices":"","new_question":true}]}'
   - name: "[JT][CICD] Publish Collection to Automation Hub"
     org: Default
     inv: Dev
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/publish_collection_hub.yml"
     creds: []
+    execution_environment: ""
+    survey_enabled: ''
   - name: "[JT][CICD] Promotion DEV -> PRO"
     org: Default
     inv: Dev
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/02-promotion.yml"
     creds: []
+    execution_environment: ""
+    survey_enabled: no
+    survey_enabled: ''
   - name: "[JT][CICD] Create new Pipeline from Template"
     org: Default
     inv: Demo Inventory
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/create_workflow_cicd.yml"
     creds: "[CICD] Red Hat Ansible Automation Platform Credential"
+    execution_environment: ""
+    survey_enabled: no
+    survey_enabled: ''
   - name: "[JT][CICD] Create new GitLab Project"
     org: Default
     inv: Demo Inventory
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
     creds: []
+    execution_environment: ""
+    survey_enabled: no
+    survey_enabled: ''
 
 scm_workflowjobtemplates:
   - name: "[WF][CICD] Pipeline Template - Collection Promotion"
     org: Default
     inv: Dev
     steps:
-      - identifier: node101
+      - identifier: Sanity Tests
         unified_job_template:
           organization:
             name: Default
-          name: "[JT][CICD] Unit Tests"
+          name: "[JT][CICD] Sanity Tests"
           type: job_template
         credentials: []
         related:
           success_nodes:
-            - identifier: node201
+            - identifier: Publish Collection to Automation Hub
           failure_nodes: []
           always_nodes: []
           credentials: []  
-      - identifier: node201
+      - identifier: Units Tests
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[JT][CICD] Units Tests"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes:
+            - identifier: Publish Collection to Automation Hub
+          failure_nodes: []
+          always_nodes: []
+          credentials: []  
+      - identifier: Integration Tests
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[JT][CICD] Integration Tests"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes:
+            - identifier: Publish Collection to Automation Hub
+          failure_nodes: []
+          always_nodes: []
+          credentials: []  
+      - identifier: Publish Collection to Automation Hub
         unified_job_template:
           organization:
             name: Default
@@ -101,11 +169,11 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: node301
+            - identifier: "Promotion DEV -> PRO"
           failure_nodes: []
           always_nodes: []
           credentials: []      
-      - identifier: node301
+      - identifier: "Promotion DEV -> PRO"
         unified_job_template:
           organization:
             name: Default

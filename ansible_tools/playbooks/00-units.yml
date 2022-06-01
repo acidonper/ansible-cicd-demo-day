@@ -6,14 +6,14 @@
 
   - name: Git checkout
     ansible.builtin.git:
-      repo: '{{ git_repository }}'
+      repo: '{{ gitlab_repository }}'
       dest: '/tmp/template-ansible-collection'
-      version: '{{ branch_repository }}'
+      version: '{{ gitlab_branch }}'
 
   - name: Run units
     ansible.builtin.shell:
-      cmd: ansible-test units
-      chdir: "/tmp/template-ansible-collection/ansible_collections/{{ package_collection }}/{{ name_collection }}"
+      cmd: ansible-test units --coverage
+      chdir: "/tmp/ansible-collection-folder/ansible_collections/{{ ansible_namespace }}/{{ ansible_collection }}"
     ignore_errors: yes
     register: result_units
 
@@ -21,3 +21,15 @@
     set_stats:
       data:
         result_units:  "{{ result_units }}"
+
+  - name: Run coverage
+    ansible.builtin.shell:
+      cmd: ansible-test coverage report
+      chdir: "/tmp/ansible-collection-folder/ansible_collections/{{ ansible_namespace }}/{{ ansible_collection }}"
+    ignore_errors: yes
+    register: result_coverage
+
+  - name: "Report coverage Execution"
+    set_stats:
+      data:
+        result_coverage:  "{{ result_coverage }}"

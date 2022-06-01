@@ -118,6 +118,36 @@
         - inventories is defined
         - inventories|length > 0
 
+    - name: Add local host
+      ansible.controller.host:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        inventory: "{{ item.org }}"
+        variables: "{{ item.vars }}"
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
+        state: present
+        validate_certs: no
+      loop: "{{ hosts }}"
+      when:
+        - hosts is defined
+        - hosts|length > 0
+
+    - name: Add Execution Enviroment
+      ansible.controller.execution_environment:
+        name: "{{ item.name }}"
+        image: "{{ item.desc }}"
+        state: present
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
+        validate_certs: no
+      loop: "{{ execution_enviroment }}"
+      when:
+        - execution_enviroment is defined
+        - execution_enviroment|length > 0
+
     - name: Create Credential Types
       ansible.controller.credential_type:
         name: "{{ item.name }}"
@@ -186,11 +216,15 @@
         project: "{{ item.project }}"
         playbook: "{{ item.playbook }}"
         credentials: "{{ item.creds }}"
+        execution_environment: "{{ item.execution_environment }}"
+        survey_enabled: "{{ item.survey_enabled }}"
+        survey_spec: 
         state: present
         validate_certs: no
         controller_host: "{{ aap_host }}"
         controller_username: "{{ aap_user }}"
         controller_password: "{{ aap_pass }}"
+        survey_spec: "{{ item.survey_spec }}"
       loop: "{{ scm_jobtemplates }}"
       when:
         - scm_jobtemplates is defined

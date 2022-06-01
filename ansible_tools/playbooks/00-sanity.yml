@@ -6,14 +6,14 @@
 
   - name: Git checkout
     ansible.builtin.git:
-      repo: '{{ git_repository }}'
-      dest: '/tmp/template-ansible-collection'
-      version: '{{ branch_repository }}'
+      repo: '{{ gitlab_repository }}'
+      dest: '/tmp/ansible-collection-folder'
+      version: '{{ gitlab_branch }}'
 
   - name: Run Sanity
     ansible.builtin.shell:
       cmd: ansible-test sanity --python 3.8 --local
-      chdir: "/tmp/template-ansible-collection/ansible_collections/{{ package_collection }}/{{ name_collection }}"
+      chdir: "/tmp/ansible-collection-folder/ansible_collections/{{ ansible_namespace }}/{{ ansible_collection }}"
     ignore_errors: yes
     register: result_sanity
 

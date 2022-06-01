@@ -1,0 +1,40 @@
+---
+- name: Create CICD Workflow Job Template
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Copy CICD Workflow Job Template
+      ansible.controller.workflow_job_template:
+        name: "[WF][CICD] {{ gitlab_project_name }} Pipeline"
+        copy_from: "[WF][CICD] Pipeline Template - Collection Promotion"
+        organization: Default
+        webhook_service: gitlab
+      register: aap_new_workflow
+ 
+    - name: Set Workflow Job Template ID
+      ansible.builtin.set_fact:
+        aap_new_workflow_id: "{{ aap_new_workflow.id }}"
+
+    - name: Get Workflow Job Template Webhook
+      ansible.builtin.uri:
+        url: "{{ lookup('env', 'CONTROLLER_HOST') }}/api/v2/workflow_job_templates/{{ aap_new_workflow_id }}/webhook_key/"
+        user: "{{ lookup('env', 'CONTROLLER_USERNAME') }}"
+        password: "{{ lookup('env', 'CONTROLLER_PASSWORD') }}"
+        force_basic_auth: yes
+        method: GET
+        return_content: yes
+        status_code:
+          - 200
+        body_format: json
+        headers:
+          Content-Type: application/json
+          # Authorization: "Bearer {{ lookup('env', 'CONTROLLER_OAUTH_TOKEN') }}"
+        validate_certs: "{{ lookup('env', 'CONTROLLER_VERIFY_SSL') }}"
+      register: aap_new_workflow_webhook
+  
+    - name: Set Workflow Job Template Webhook URL and Key
+      ansible.builtin.set_stats:
+        data:
+          aap_new_workflow_webhook_url: "{{ lookup('env', 'CONTROLLER_HOST') }}/api/v2/workflow_job_templates/{{ aap_new_workflow_id }}/gitlab/"
+          aap_new_workflow_webhook_key:  "{{ aap_new_workflow_webhook.json.webhook_key }}"

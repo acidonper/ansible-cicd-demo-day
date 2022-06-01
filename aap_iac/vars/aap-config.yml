@@ -1,6 +1,6 @@
-aap_host: aap-ansible-automation-platform.apps.opentlc.com
+aap_host: aap.apps.ocp4cluster.ocp4.cfernand.com
 aap_user: admin
-aap_pass: ansible
+aap_pass: redhat
 
 domain: demoday.com
 
@@ -19,10 +19,23 @@ inventories:
     desc: "Development Inventory"
     org: Default
 
-scm_credentials: []
+scm_credential_types:
+  - name: "GitLab Access Token"
+    kind: cloud
+    inputs: "{{ lookup('file', 'credential_types/gitlab_acces_token_inputs.json') }}"
+    injectors: "{{ lookup('file', 'credential_types/gitlab_acces_token_injectors.json') }}"
+
+scm_credentials:
+  - name: "[CICD] Red Hat Ansible Automation Platform Credential"
+    desc: "Red Hat Ansible Automation Platform Credential"
+    org: Default
+    type: "Red Hat Ansible Automation Platform"
+    host: "https://{{ aap_host }}"
+    user: "{{ aap_user }}"
+    pass: "{{ aap_pass }}"
 
 scm_projects:
-  - name: "Ansible CI/CD"
+  - name: "[CICD] Ansible CI/CD"
     desc: "Ansible CI/CD Project"
     org: Default
     git_url: "https://github.com/acidonper/ansible-cicd-demo-day.git"
@@ -30,27 +43,39 @@ scm_projects:
     git_cred: ""
 
 scm_jobtemplates:
-  - name: "[CICD] Unit Tests"
+  - name: "[JT][CICD] Unit Tests"
     org: Default
     inv: Dev
-    project: "Ansible CI/CD"
+    project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/00-unittests.yml"
     creds: []
-  - name: "[CICD] Publish Hub"
+  - name: "[JT][CICD] Publish Collection to Automation Hub"
     org: Default
     inv: Dev
-    project: "Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/01-publish-hub.yml"
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/publish_collection_hub.yml"
     creds: []
-  - name: "[CICD] Promotion DEV -> PRO"
+  - name: "[JT][CICD] Promotion DEV -> PRO"
     org: Default
     inv: Dev
-    project: "Ansible CI/CD"
+    project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/02-promotion.yml"
+    creds: []
+  - name: "[JT][CICD] Create new Pipeline from Template"
+    org: Default
+    inv: Demo Inventory
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/create_workflow_cicd.yml"
+    creds: "[CICD] Red Hat Ansible Automation Platform Credential"
+  - name: "[JT][CICD] Create new GitLab Project"
+    org: Default
+    inv: Demo Inventory
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
     creds: []
 
 scm_workflowjobtemplates:
-  - name: "[CICD] Pipeline Template - Collection Promotion"
+  - name: "[WF][CICD] Pipeline Template - Collection Promotion"
     org: Default
     inv: Dev
     steps:
@@ -58,7 +83,7 @@ scm_workflowjobtemplates:
         unified_job_template:
           organization:
             name: Default
-          name: "[CICD] Unit Tests"
+          name: "[JT][CICD] Unit Tests"
           type: job_template
         credentials: []
         related:
@@ -71,7 +96,7 @@ scm_workflowjobtemplates:
         unified_job_template:
           organization:
             name: Default
-          name: "[CICD] Publish Hub"
+          name: "[JT][CICD] Publish Collection to Automation Hub"
           type: job_template
         credentials: []
         related:
@@ -84,11 +109,44 @@ scm_workflowjobtemplates:
         unified_job_template:
           organization:
             name: Default
-          name: "[CICD] Promotion DEV -> PRO"
+          name: "[JT][CICD] Promotion DEV -> PRO"
           type: job_template
         credentials: []
         related:
           success_nodes: []
           failure_nodes: []
           always_nodes: []
-          credentials: []   
+          credentials: [] 
+
+scm_workflowjobtemplates_survey:
+  - name: "[WF][CICD] Onboarding new project"
+    org: Default
+    inv: Demo Inventory
+    survey_enabled: yes
+    survey_spec: "{{ lookup('file', 'survey_specs/onboarding-new-project-survey.json') }}"
+    steps:
+      - identifier: node101
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[JT][CICD] Create new Pipeline from Template"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes:
+            - identifier: node201
+          failure_nodes: []
+          always_nodes: []
+          credentials: []
+      - identifier: node201
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[JT][CICD] Create new GitLab Project"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes: []
+          failure_nodes: []
+          always_nodes: []
+          credentials: []  

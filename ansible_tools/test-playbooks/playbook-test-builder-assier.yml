@@ -1,0 +1,50 @@
+---
+- name: This is a hello-world example
+  hosts: localhost
+  gather_facts: no
+  tasks:
+
+  - name: Git checkout
+    ansible.builtin.git:
+      repo: 'https://github.com/acidonper/ansible-cicd-demo-day.git'
+      dest: '/tmp/template-ansible-collection'
+      version: 'master'
+
+  # - name: Run list pip
+  #   ansible.builtin.shell:
+  #     cmd: pip list
+  #   ignore_errors: yes
+  #   register: result
+
+  # - debug: 
+  #     msg: "{{result}}"
+
+  - name: Run Sanity
+    ansible.builtin.shell:
+      cmd: ansible-test sanity --python 3.8 --local
+      chdir: /tmp/template-ansible-collection/ansible_collections/demoday/reports
+    ignore_errors: yes
+    register: result
+
+  - debug: 
+      msg: "{{result}}"
+
+  - name: Run units
+    ansible.builtin.shell:
+      cmd: ansible-test units
+      chdir: /tmp/template-ansible-collection/ansible_collections/demoday/reports
+    ignore_errors: yes
+    register: result
+
+  - debug: 
+      msg: "{{result}}"
+
+  - name: Run integration
+    ansible.builtin.shell:
+      cmd: ansible-test integration --start-at api_manage
+      chdir: /tmp/template-ansible-collection/ansible_collections/demoday/reports
+    ignore_errors: yes  
+    register: result
+
+  - debug: 
+      msg: "{{result}}"

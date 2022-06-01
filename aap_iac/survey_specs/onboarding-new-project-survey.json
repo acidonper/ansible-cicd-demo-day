@@ -22,11 +22,42 @@
             "new_question": false
         },
         {
-            "question_name": "New Project Name",
+            "question_name": "GitLab Project name",
             "question_description": "",
             "required": true,
             "type": "text",
             "variable": "gitlab_project_name",
+            "min": 0,
+            "max": 1024,
+            "default": "",
+            "choices": "",
+            "formattedChoices": [
+                {
+                    "choice": "",
+                    "isDefault": false,
+                    "id": 0
+                }
+            ],
+            "new_question": false
+        },
+        {
+            "question_name": "Ansible Namespace name",
+            "question_description": "",
+            "required": true,
+            "type": "text",
+            "variable": "ansible_namespace",
+            "min": 0,
+            "max": 1024,
+            "default": "",
+            "choices": "",
+            "new_question": true
+        },
+        {
+            "question_name": "Ansible Collection name",
+            "question_description": "",
+            "required": true,
+            "type": "text",
+            "variable": "ansible_collection",
             "min": 0,
             "max": 1024,
             "default": "",

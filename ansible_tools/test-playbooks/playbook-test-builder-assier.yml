@@ -41,9 +41,9 @@
       msg: "{{result-integration}}"
 
   - name: "Artifact URL of test results to Tower Workflows"
-      set_stats:
-        data:
-          result-sanity:  "{{ result-sanity }}"
-          result-units:  "{{ result-units }}"
-          result-integration:  "{{ result-integration }}"
+    set_stats:
+      data:
+        result-sanity:  "{{ result-sanity }}"
+        result-units:  "{{ result-units }}"
+        result-integration:  "{{ result-integration }}"
           

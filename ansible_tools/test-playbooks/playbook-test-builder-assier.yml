@@ -15,35 +15,34 @@
       cmd: ansible-test sanity --python 3.8 --local
       chdir: /tmp/template-ansible-collection/ansible_collections/demoday/reports
     ignore_errors: yes
-    register: result-sanity
+    register: result_sanity
 
   - debug: 
-      msg: "{{result-sanity}}"
+      msg: "{{ result_sanity }}"
 
   - name: Run units
     ansible.builtin.shell:
       cmd: ansible-test units
       chdir: /tmp/template-ansible-collection/ansible_collections/demoday/reports
     ignore_errors: yes
-    register: result-units
+    register: result_units
 
   - debug: 
-      msg: "{{result-units}}"
+      msg: "{{ result_units }}"
 
   - name: Run integration
     ansible.builtin.shell:
       cmd: ansible-test integration --start-at api_manage
       chdir: /tmp/template-ansible-collection/ansible_collections/demoday/reports
     ignore_errors: yes  
-    register: result-integration
+    register: result_integration
 
   - debug: 
-      msg: "{{result-integration}}"
+      msg: "{{ result_integration }}"
 
   - name: "Artifact URL of test results to Tower Workflows"
     set_stats:
       data:
-        result-sanity:  "{{ result-sanity }}"
-        result-units:  "{{ result-units }}"
-        result-integration:  "{{ result-integration }}"
-          
+        result_sanity:  "{{ result_sanity }}"
+        result_units:  "{{ result_units }}"
+        result_integration:  "{{ result_integration }}"

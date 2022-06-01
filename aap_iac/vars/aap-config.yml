@@ -4,11 +4,18 @@ aap_pass: redhat
 
 domain: demoday.com
 
-organizations: []
+organizations:
+  - name: DemoDay
+    desc: "DemoDay Organization"
 
 teams: []
 
-users: []
+users:
+  - username: ansibledemoday
+    password: redhat
+    email: ansibledemoday@gmail.com
+    org: DemoDay
+    role: member
 
 admin_users: []
 

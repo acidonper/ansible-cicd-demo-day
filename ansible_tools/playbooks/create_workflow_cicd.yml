@@ -6,11 +6,19 @@
   tasks:
     - name: Copy CICD Workflow Job Template
       ansible.controller.workflow_job_template:
-        name: "[WF][CICD] {{ gitlab_project_name }} Pipeline"
+        name: "[WF][CICD] {{ gitlab_project_name }} - Pipeline"
         copy_from: "[WF][CICD] Pipeline Template - Collection Promotion"
-        organization: Default
+        organization: DemoDay
+        extra_vars: {'gitlab_repository': 'https://gitlab.com/ansible-cicd-demo-day/demo-day-collections/{{ gitlab_project_name }}.git', 'gitlab_branch':'develop', 'ansible_namespace':'{{ ansible_namespace }}', 'ansible_collection':' {{ ansible_collection }}'}
         webhook_service: gitlab
       register: aap_new_workflow
+
+    - name: "Add {{ gitlab_username }} to CICD Workflow Job Template"
+      ansible.controller.role:
+        user: "{{ gitlab_username }}"
+        role: execute
+        workflow: "[WF][CICD] {{ gitlab_project_name }} - Pipeline"
+      state: present
  
     - name: Set Workflow Job Template ID
       ansible.builtin.set_fact:

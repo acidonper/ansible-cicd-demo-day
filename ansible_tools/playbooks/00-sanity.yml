@@ -13,12 +13,12 @@
   - name: Run Sanity
     ansible.builtin.shell:
       cmd: ansible-test sanity --python 3.8 --local
-      chdir: "/tmp/template-ansible-collection/{{ package_collection }}/{{ name_collection }}"
+      chdir: "/tmp/template-ansible-collection/ansible_collections/{{ package_collection }}/{{ name_collection }}"
     ignore_errors: yes
     register: result_sanity
 
 
-  - name: "Artifact URL of test results to Tower Workflows"
+  - name: "Report Sanity Execution"
     set_stats:
       data:
         result_sanity:  "{{ result_sanity }}"

@@ -13,7 +13,7 @@
   - name: Run integration
     ansible.builtin.shell:
       cmd: ansible-test integration --start-at api_manage
-      chdir: "/tmp/template-ansible-collection/{{ package_collection }}/{{ name_collection }}"
+      chdir: "/tmp/template-ansible-collection/ansible_collections/{{ package_collection }}/{{ name_collection }}"
     ignore_errors: yes  
     register: result_integration
 

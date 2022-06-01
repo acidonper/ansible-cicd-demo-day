@@ -1,5 +1,5 @@
 ---
-- name: This is a Sanity testing collection
+- name: This is a Units testing collection
   hosts: localhost
   gather_facts: no
   tasks:
@@ -13,7 +13,7 @@
   - name: Run units
     ansible.builtin.shell:
       cmd: ansible-test units
-      chdir: "/tmp/template-ansible-collection/{{ package_collection }}/{{ name_collection }}"
+      chdir: "/tmp/template-ansible-collection/ansible_collections/{{ package_collection }}/{{ name_collection }}"
     ignore_errors: yes
     register: result_units
 

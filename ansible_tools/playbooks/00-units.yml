@@ -7,7 +7,7 @@
   - name: Git checkout
     ansible.builtin.git:
       repo: '{{ gitlab_repository }}'
-      dest: '/tmp/template-ansible-collection'
+      dest: '/tmp/ansible-collection-folder'
       version: '{{ gitlab_branch }}'
 
   - name: Run units

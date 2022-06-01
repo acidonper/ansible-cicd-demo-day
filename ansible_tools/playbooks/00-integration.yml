@@ -1,0 +1,23 @@
+---
+- name: This is a Integration testing collection
+  hosts: localhost
+  gather_facts: no
+  tasks:
+
+  - name: Git checkout
+    ansible.builtin.git:
+      repo: '{{ git_repository }}'
+      dest: '/tmp/template-ansible-collection'
+      version: '{{ branch_repository }}'
+
+  - name: Run integration
+    ansible.builtin.shell:
+      cmd: ansible-test integration --start-at api_manage
+      chdir: "/tmp/template-ansible-collection/{{ package_collection }}/{{ name_collection }}"
+    ignore_errors: yes  
+    register: result_integration
+
+  - name: "Report Integration Execution"
+    set_stats:
+      data:
+        result_integration:  "{{ result_integration }}"

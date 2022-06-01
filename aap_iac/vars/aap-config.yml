@@ -25,12 +25,15 @@ inventories:
   - name: Dev
     desc: "Development Inventory"
     org: Default
+  - name: "Automation Controller Inventory"
+    desc: "Automation Controller Inventory"
+    org: Default
 
 hosts: 
   - name: localhost
-    desc: "Local Host Group"
-    org: Default
-    vars: '{"ansible_connection": "local"}'
+    desc: ""
+    inv: "Automation Controller Inventory"
+    vars: "ansible_connection: local"
 
 execution_enviroment: 
   - name: ansible-ee-ansible-test
@@ -60,6 +63,36 @@ scm_projects:
     git_cred: ""
 
 scm_jobtemplates:
+  - name: "[JT][CICD] Publish Collection to Automation Hub"
+    org: Default
+    inv: "Automation Controller Inventory"
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/publish_collection_hub.yml"
+    creds: []
+    execution_environment: ""
+  - name: "[JT][CICD] Promotion DEV -> PRO"
+    org: Default
+    inv: "Automation Controller Inventory"
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/02-promotion.yml"
+    creds: []
+    execution_environment: ""
+  - name: "[JT][CICD] Create new Pipeline from Template"
+    org: Default
+    inv: "Automation Controller Inventory"
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/create_workflow_cicd.yml"
+    creds: "[CICD] Red Hat Ansible Automation Platform Credential"
+    execution_environment: ""
+  - name: "[JT][CICD] Create new GitLab Project"
+    org: Default
+    inv: "Automation Controller Inventory"
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
+    creds: []
+    execution_environment: ""
+
+scm_jobtemplates_survey:
   - name: "[JT][CICD] Sanity Tests"
     org: Default
     inv: Dev
@@ -68,7 +101,7 @@ scm_jobtemplates:
     creds: []
     execution_environment: "ansible-ee-ansible-test"
     survey_enabled: yes
-    survey_spec: '{"name":"","description":"","spec":[{"question_name":"Add collection git repository url","question_description":"Collection Git repository URL","required":true,"type":"text","variable":"gitlab_repository","min":0,"max":1024,"default":"","choices":"","formattedChoices":[{"choice":"","isDefault":false,"id":0}],"new_question":false},{"question_name":"Add collection git repository branch","question_description":"Collection Git repository branch","required":true,"type":"text","variable":"gitlab_branch","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add namespace collection","question_description":"Name of namespace collection","required":true,"type":"text","variable":"ansible_namespace","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add name collection","question_description":"name of collection","required":true,"type":"text","variable":"ansible_collection","min":0,"max":1024,"default":"","choices":"","new_question":true}]}'
+    survey_spec: "{{ lookup('file', 'survey_specs/00-sanity-test-survey.json') }}"
   - name: "[JT][CICD] Units Tests"
     org: Default
     inv: Dev
@@ -77,7 +110,7 @@ scm_jobtemplates:
     creds: []
     execution_environment: "ansible-ee-ansible-test"
     survey_enabled: yes
-    survey_spec: '{"name":"","description":"","spec":[{"question_name":"Add collection git repository url","question_description":"Collection Git repository URL","required":true,"type":"text","variable":"gitlab_repository","min":0,"max":1024,"default":"","choices":"","formattedChoices":[{"choice":"","isDefault":false,"id":0}],"new_question":false},{"question_name":"Add collection git repository branch","question_description":"Collection Git repository branch","required":true,"type":"text","variable":"gitlab_branch","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add namespace collection","question_description":"Name of namespace collection","required":true,"type":"text","variable":"ansible_namespace","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add name collection","question_description":"name of collection","required":true,"type":"text","variable":"ansible_collection","min":0,"max":1024,"default":"","choices":"","new_question":true}]}'
+    survey_spec: "{{ lookup('file', 'survey_specs/00-units-tests-survey.json') }}"
   - name: "[JT][CICD] Integration Tests"
     org: Default
     inv: Dev
@@ -86,42 +119,7 @@ scm_jobtemplates:
     creds: []
     execution_environment: "ansible-ee-ansible-test"
     survey_enabled: yes
-    survey_spec: '{"name":"","description":"","spec":[{"question_name":"Add collection git repository url","question_description":"Collection Git repository URL","required":true,"type":"text","variable":"gitlab_repository","min":0,"max":1024,"default":"","choices":"","formattedChoices":[{"choice":"","isDefault":false,"id":0}],"new_question":false},{"question_name":"Add collection git repository branch","question_description":"Collection Git repository branch","required":true,"type":"text","variable":"gitlab_branch","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add namespace collection","question_description":"Name of namespace collection","required":true,"type":"text","variable":"ansible_namespace","min":0,"max":1024,"default":"","choices":"","new_question":true},{"question_name":"Add name collection","question_description":"name of collection","required":true,"type":"text","variable":"ansible_collection","min":0,"max":1024,"default":"","choices":"","new_question":true}]}'
-  - name: "[JT][CICD] Publish Collection to Automation Hub"
-    org: Default
-    inv: Dev
-    project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/publish_collection_hub.yml"
-    creds: []
-    execution_environment: ""
-    survey_enabled: ''
-  - name: "[JT][CICD] Promotion DEV -> PRO"
-    org: Default
-    inv: Dev
-    project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/02-promotion.yml"
-    creds: []
-    execution_environment: ""
-    survey_enabled: no
-    survey_enabled: ''
-  - name: "[JT][CICD] Create new Pipeline from Template"
-    org: Default
-    inv: Demo Inventory
-    project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/create_workflow_cicd.yml"
-    creds: "[CICD] Red Hat Ansible Automation Platform Credential"
-    execution_environment: ""
-    survey_enabled: no
-    survey_enabled: ''
-  - name: "[JT][CICD] Create new GitLab Project"
-    org: Default
-    inv: Demo Inventory
-    project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
-    creds: []
-    execution_environment: ""
-    survey_enabled: no
-    survey_enabled: ''
+    survey_spec: "{{ lookup('file', 'survey_specs/00-integration-tests-survey.json') }}"
 
 scm_workflowjobtemplates:
   - name: "[WF][CICD] Pipeline Template - Collection Promotion"
@@ -196,7 +194,7 @@ scm_workflowjobtemplates:
 scm_workflowjobtemplates_survey:
   - name: "[WF][CICD] Onboarding new project"
     org: Default
-    inv: Demo Inventory
+    inv: "Automation Controller Inventory"
     survey_enabled: yes
     survey_spec: "{{ lookup('file', 'survey_specs/onboarding-new-project-survey.json') }}"
     steps:

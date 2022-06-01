@@ -118,12 +118,12 @@
         - inventories is defined
         - inventories|length > 0
 
-    - name: Add local host
+    - name: Add hosts
       ansible.controller.host:
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
-        inventory: "{{ item.org }}"
-        variables: "{{ item.vars }}"
+        inventory: "{{ item.inv }}"
+        # variables: "{{ item.vars }}"
         controller_host: "{{ aap_host }}"
         controller_username: "{{ aap_user }}"
         controller_password: "{{ aap_pass }}"
@@ -198,6 +198,7 @@
         scm_update_on_launch: yes
         scm_url: "{{ item.git_url }}"
         state: present
+        wait: yes
         validate_certs: no
         controller_host: "{{ aap_host }}"
         controller_username: "{{ aap_user }}"
@@ -217,19 +218,37 @@
         playbook: "{{ item.playbook }}"
         credentials: "{{ item.creds }}"
         execution_environment: "{{ item.execution_environment }}"
-        survey_enabled: "{{ item.survey_enabled }}"
-        survey_spec: 
         state: present
         validate_certs: no
         controller_host: "{{ aap_host }}"
         controller_username: "{{ aap_user }}"
         controller_password: "{{ aap_pass }}"
-        survey_spec: "{{ item.survey_spec }}"
       loop: "{{ scm_jobtemplates }}"
       when:
         - scm_jobtemplates is defined
         - scm_jobtemplates|length > 0
 
+    - name: Create AAP Job Templates with Survey
+      ansible.controller.job_template:
+        name: "{{ item.name }}"
+        job_type: "run"
+        organization: "{{ item.org }}"
+        inventory: "{{ item.inv }}"
+        project: "{{ item.project }}"
+        playbook: "{{ item.playbook }}"
+        credentials: "{{ item.creds }}"
+        execution_environment: "{{ item.execution_environment }}"
+        survey_enabled: "{{ item.survey_enabled }}"
+        survey_spec: "{{ item.survey_spec }}"
+        state: present
+        validate_certs: no
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
+      loop: "{{ scm_jobtemplates_survey }}"
+      when:
+        - scm_jobtemplates_survey is defined
+        - scm_jobtemplates_survey|length > 0
 
     - name: Create AAP Workflow Job Templates
       ansible.controller.workflow_job_template:

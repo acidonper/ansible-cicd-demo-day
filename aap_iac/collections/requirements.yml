@@ -1,2 +1,3 @@
 collections:
-- awx.awx
+# - awx.awx
+- ansible.controller

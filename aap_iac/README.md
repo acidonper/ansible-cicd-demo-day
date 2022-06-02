@@ -30,6 +30,19 @@ pip install -r requirements.txt
 ansible-galaxy collection install -r collections/requirements.yml
 ```
 
+NOTE: it is important to configure the ansible.cfg file in order to be able to download collections from Red Hat Automation Hub server. Please go to https://cloud.redhat.com/ansible/automation-hub/token/ and click Get API token from the version dropdown to copy your API token.
+
+```$bash
+vi /etc/ansible/ansible.cfg
+[galaxy]
+server_list = automation_hub
+
+[galaxy_server.automation_hub]
+url=https://console.redhat.com/api/automation-hub/
+auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+token=<my_ah_token>
+```
+
 ## Procedure
 
 The programmatic procedure includes both the creation and deletion of the objects.

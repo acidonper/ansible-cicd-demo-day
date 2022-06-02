@@ -1,6 +1,6 @@
 ---
 - name: Publish Collection to Automation Hub
-  hosts: all
+  hosts: localhost
   gather_facts: false
 
   tasks: 
@@ -30,10 +30,10 @@
         validate_certs: "{{ validate_certs }}"
       when: 'not "admin" in group_list.content'
 
-    - name: check ansible_ssa namespace exists
+    - name: check namespace exists
       ansible.builtin.uri:
         return_content: true
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/my-namespaces/ansible_ssa/"
+        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/my-namespaces/{{ansible_namespace}}/"
         method: GET
         body_format: json
         validate_certs: "{{ validate_certs }}"
@@ -53,7 +53,7 @@
           Authorization: "Token {{ automation_hub_private_api_token }}"
       register: group_list
 
-    - name: create ansible_ssa namespace
+    - name: create namespace
       ansible.builtin.uri:
         return_content: true
         url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/my-namespaces/"
@@ -63,7 +63,7 @@
         headers:
           Authorization: "Token {{ automation_hub_private_api_token }}"
         body:
-          "name": "ansible_ssa"
+          "name": "{{ansible_namespace}}"
           "groups":
             - "name": "admin"
               "id": "{{ group_list.json.data[0].id }}"
@@ -79,48 +79,33 @@
     - name: check if collection already exists
       ansible.builtin.uri:
         return_content: true
-        url: https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/repo/published/ansible_ssa/general/
+        url: https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/repo/published/{{ansible_collection}}/general/
         validate_certs: "{{ validate_certs }}"
         headers:
           Authorization: "Token {{ automation_hub_private_api_token }}"
         method: GET
-      register: ansible_ssa_collection
+      register: namespace_collection
       ignore_errors: true
 
-    - name: check for latest Ansible SSA collection version
-      ansible.builtin.uri:
-        url: https://gitlab.com/api/v4/projects/24587668/releases
-        return_content: true
-      register: ansible_ssa_collection_release
+    - name: Git checkout
+      ansible.builtin.git:
+        repo: '{{ gitlab_repository }}'
+        dest: '/tmp/ansible-collection-folder'
+        version: '{{ gitlab_branch }}'
 
-    - name: download latest version of Ansible SSA collection
-      ansible.builtin.get_url:
-        url: https://gitlab.com/ansible-ssa/ansible-ssa-collection/-/raw/{{ ansible_ssa_collection_release.json[0].tag_name }}/ansible_ssa-general-{{ ansible_ssa_collection_release.json[0].tag_name | replace ('v','') }}.tar.gz?inline=false
-        dest: /tmp/ansible_ssa-general-{{ ansible_ssa_collection_release.json[0].tag_name | replace ('v','') }}.tar.gz
-      register: ansible_ssa_collection_download
+    - name: Build the collection
+      ansible.builtin.shell:
+        cmd: ansible-galaxy collection build . --force
+        chdir: "/tmp/ansible-collection-folder/ansible_collections/{{ ansible_namespace }}/{{ ansible_collection }}"
+      ignore_errors: yes
+      register: collection_tar_path
 
-    - name: publish Ansible SSA collection on private automation hub
-      ansible.builtin.command: ansible-galaxy collection publish -s https://{{ controller_ah_fqdn }}/api/galaxy/content/inbound-ansible_ssa/ --token "{{ authentication_token.json.token }}" {{ ansible_ssa_collection_download.dest }}
-      notify: approve Ansible SSA collection
+    - set_fact:
+        collection_path: "{{collection_tar_path.stdout | regex_replace('^(.*)at\\s(?P<path>.+)$', '\\g<path>') }}"
+
+    - name: publish collection on private automation hub
+      ansible.builtin.shell: 
+        cmd: ansible-galaxy collection publish -c -s https://{{ controller_ah_fqdn }}/api/galaxy/content/inbound-{{ ansible_namespace }}/ --api-key {{ automation_hub_private_api_token }} {{ collection_path }}
       when:
-        - ansible_ssa_collection.status == 404
-        - validate_certs | bool
-
-    - name: publish Ansible SSA collection on private automation hub
-      ansible.builtin.command: ansible-galaxy collection publish -c -s https://{{ controller_ah_fqdn }}/api/galaxy/content/inbound-ansible_ssa/ --token "{{ authentication_token.json.token }}" {{ ansible_ssa_collection_download.dest }}
-      notify: approve Ansible SSA collection
-      when:
-        - ansible_ssa_collection.status == 404
+        - namespace_collection.status == 404
         - not validate_certs | bool
-
-    - name: approve Ansible SSA collection
-      ansible.builtin.uri:
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/v3/collections/ansible_ssa/general/versions/{{ ansible_ssa_collection_release.json[0].tag_name | replace ('v','')  }}/move/staging/published/"
-        method: POST
-        body_format: json
-        validate_certs: "{{ not letsencrypt_staging | bool }}"
-        headers:
-          Authorization: "Token {{ authentication_token.json.token }}"
-        status_code:
-          - 200
-          - 202

@@ -67,14 +67,21 @@ scm_jobtemplates:
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/publish_collection_hub.yml"
+    playbook: "ansible_tools/playbooks/02-publish-collection-hub.yml"
     creds: []
     execution_environment: ""
   - name: "[JT][CICD] Promotion DEV -> PRO"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/02-promotion.yml"
+    playbook: "ansible_tools/playbooks/03-promotion.yml"
+    creds: []
+    execution_environment: ""
+  - name: "[JT][CICD] Notify Tests Reports"
+    org: Default
+    inv: "Automation Controller Inventory"
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/01-notify-tests-reports.yml"
     creds: []
     execution_environment: ""
   - name: "[JT][CICD] Create new Pipeline from Template"
@@ -89,6 +96,13 @@ scm_jobtemplates:
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
+    creds: []
+    execution_environment: ""
+  - name: "[JT][CICD] Notify Onboarded Project"
+    org: Default
+    inv: "Automation Controller Inventory"
+    project: "[CICD] Ansible CI/CD"
+    playbook: "ansible_tools/playbooks/notify_onboarded_project.yml"
     creds: []
     execution_environment: ""
 
@@ -148,7 +162,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: Publish Collection to Automation Hub
+            - identifier: Notify Tests Reports
           failure_nodes: []
           always_nodes: []
           credentials: []  
@@ -161,10 +175,23 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: Publish Collection to Automation Hub
+            - identifier: Notify Tests Reports
           failure_nodes: []
           always_nodes: []
           credentials: []  
+      - identifier: Notify Tests Reports
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[JT][CICD] Notify Tests Reports"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes:
+            - identifier: "Publish Collection to Automation Hub"
+          failure_nodes: []
+          always_nodes: []
+          credentials: []
       - identifier: Publish Collection to Automation Hub
         unified_job_template:
           organization:
@@ -216,6 +243,19 @@ scm_workflowjobtemplates_survey:
           organization:
             name: Default
           name: "[JT][CICD] Create new GitLab Project"
+          type: job_template
+        credentials: []
+        related:
+          success_nodes: 
+            - identifier: Notify Onboarded Project
+          failure_nodes: []
+          always_nodes: []
+          credentials: []  
+      - identifier: Notify Onboarded Project
+        unified_job_template:
+          organization:
+            name: Default
+          name: "[JT][CICD] Notify Onboarded Project"
           type: job_template
         credentials: []
         related:

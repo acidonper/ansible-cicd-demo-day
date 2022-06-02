@@ -9,7 +9,7 @@
         name: "[WF][CICD] {{ gitlab_project_name }} - Pipeline"
         copy_from: "[WF][CICD] Pipeline Template - Collection Promotion"
         organization: DemoDay
-        extra_vars: {'gitlab_repository': 'https://gitlab.com/ansible-cicd-demo-day/demo-day-collections/{{ gitlab_project_name }}.git', 'gitlab_branch':'develop', 'ansible_namespace':'{{ ansible_namespace }}', 'ansible_collection':' {{ ansible_collection }}'}
+        extra_vars: {'gitlab_repository': 'https://gitlab.com/ansible-cicd-demo-day/demo-day-collections/{{ gitlab_project_name }}.git', 'gitlab_branch': 'develop', 'ansible_namespace': '{{ ansible_namespace }}', 'ansible_collection': '{{ ansible_collection }}'}
         webhook_service: gitlab
       register: aap_new_workflow
 

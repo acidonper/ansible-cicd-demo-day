@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Project Information - {{ gitlab_project_name }}</title>
+   </head>
+
+   <body>
+      <table border = "1" cellpadding = "5" cellspacing = "5">
+         <tr>
+            <th>Project Name</th>
+            <th>GitLab Repository</th>
+            <th>AAP CICD Pipeline</th>
+         </tr>
+         <tr>
+            <td>{{ gitlab_project_name }}</td>
+            <td>https://gitlab.com/ansible-cicd-demo-day/demo-day-collections/{{ gitlab_project_name }}</td>
+            <td>{{ lookup('env', 'CONTROLLER_HOST') }}/api/v2/workflow_job_templates/{{ aap_new_workflow_id }}</td>
+         </tr>
+      </table>
+   </body>
+</html>

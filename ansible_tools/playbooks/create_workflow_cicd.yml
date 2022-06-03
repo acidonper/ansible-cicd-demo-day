@@ -21,8 +21,9 @@
         state: present
  
     - name: Set Workflow Job Template ID
-      ansible.builtin.set_fact:
-        aap_new_workflow_id: "{{ aap_new_workflow.id }}"
+      ansible.builtin.set_stats:
+        data:
+          aap_new_workflow_id: "{{ aap_new_workflow.id }}"
 
     - name: Get Workflow Job Template Webhook
       ansible.builtin.uri:
@@ -37,7 +38,6 @@
         body_format: json
         headers:
           Content-Type: application/json
-          # Authorization: "Bearer {{ lookup('env', 'CONTROLLER_OAUTH_TOKEN') }}"
         validate_certs: "{{ lookup('env', 'CONTROLLER_VERIFY_SSL') }}"
       register: aap_new_workflow_webhook
   

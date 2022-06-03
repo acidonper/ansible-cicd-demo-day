@@ -1,0 +1,13 @@
+{
+  "fields": [
+    {
+      "id": "token",
+      "type": "string",
+      "label": "Sengrid API Key",
+      "secret": true
+    }
+  ],
+  "required": [
+    "token"
+  ]
+}

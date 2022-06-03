@@ -44,6 +44,10 @@ scm_custom_credential_types:
     kind: cloud
     inputs: "{{ lookup('file', 'credential_types/gitlab_acces_token_inputs.json') }}"
     injectors: "{{ lookup('file', 'credential_types/gitlab_acces_token_injectors.json') }}"
+  - name: "Sengrid API Key"
+    kind: cloud
+    inputs: "{{ lookup('file', 'credential_types/sendgrid_api_key_inputs.json') }}"
+    injectors: "{{ lookup('file', 'credential_types/sendgrid_api_key_injectors.json') }}"
 
 scm_credentials:
   - name: "[CICD] Red Hat Ansible Automation Platform Credential"
@@ -60,6 +64,11 @@ scm_custom_credentials:
     org: Default
     type: "GitLab Access Token"
     token: "{{ vault_gitlab_access_token }}"
+  - name: "[CICD] Sengrid API Key"
+    desc: "Sengrid API Key"
+    org: Default
+    type: "Sengrid API Key"
+    token: "{{ vault_sendgrid_api_key }}"
 
 scm_projects:
   - name: "[CICD] Ansible CI/CD"
@@ -110,7 +119,7 @@ scm_jobtemplates:
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/notify_onboarded_project.yml"
-    creds: []
+    creds: "[CICD] Sengrid API Key"
     execution_environment: ""
 
 scm_jobtemplates_survey:

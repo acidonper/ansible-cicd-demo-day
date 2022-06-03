@@ -22,6 +22,25 @@
             "new_question": false
         },
         {
+            "question_name": "GitLab Email",
+            "question_description": "",
+            "required": true,
+            "type": "text",
+            "variable": "gitlab_email_address",
+            "min": 0,
+            "max": 1024,
+            "default": "",
+            "choices": "",
+            "formattedChoices": [
+                {
+                    "choice": "",
+                    "isDefault": false,
+                    "id": 0
+                }
+            ],
+            "new_question": false
+        },
+        {
             "question_name": "GitLab Project name",
             "question_description": "",
             "required": true,

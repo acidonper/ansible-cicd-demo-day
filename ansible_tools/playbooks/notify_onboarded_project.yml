@@ -2,15 +2,16 @@
 - name: Notify Onboarded Project
   hosts: all
   gather_facts: false
+  vars:
+    sendgrid_from_email_address: "ansibledemoday@redhat.com"
 
   tasks:
-    - name: Send email via Sendgrid
+    - name: Send Onboarded Project Information
       community.general.sendgrid:
-        api_key: "{{ sendgrid_api_key | default(omit) }}"
+        api_key: "{{ lookup('env', 'SENGRID_API_KEY') }}"
         from_address: "{{ sendgrid_from_email_address }}"
-        to_addresses: "{{ sendgrid_to_email_addresses }}"
-        subject: "[CICD] New Onboarded Project"
+        to_addresses: "{{ gitlab_email_address }}"
+        subject: "[CICD] Project Information - {{ gitlab_project_name }}"
         body: "{{ lookup('template', 'onboarded_project.html.j2') }}"
         html_body: yes
       run_once: True
-      when: send_email_sendgrid | bool

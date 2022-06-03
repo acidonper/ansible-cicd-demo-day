@@ -40,7 +40,7 @@ hosts:
 
 execution_enviroment: 
   - name: ee-ansible-demoday
-    desc: quay.io/demoday/ee-demoday-image:1.0
+    desc: quay.io/demoday/ee-demoday-image:1.1
 
 scm_custom_credential_types:
   - name: "GitLab Access Token"

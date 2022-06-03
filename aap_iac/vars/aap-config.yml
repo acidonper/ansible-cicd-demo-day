@@ -33,17 +33,21 @@ hosts:
   - name: localhost
     desc: ""
     inv: "Automation Controller Inventory"
-    vars: "ansible_connection: local"
+    vars: { "ansible_connection": "local" }
 
 execution_enviroment: 
-  - name: ansible-ee-ansible-test
-    desc: quay.io/adelahoz/ansible-ee-ansible-test
+  - name: ee-ansible-demoday
+    desc: quay.io/demoday/ee-demoday-image:1.0
 
-scm_credential_types:
+scm_custom_credential_types:
   - name: "GitLab Access Token"
     kind: cloud
     inputs: "{{ lookup('file', 'credential_types/gitlab_acces_token_inputs.json') }}"
     injectors: "{{ lookup('file', 'credential_types/gitlab_acces_token_injectors.json') }}"
+  - name: "Sengrid API Key"
+    kind: cloud
+    inputs: "{{ lookup('file', 'credential_types/sendgrid_api_key_inputs.json') }}"
+    injectors: "{{ lookup('file', 'credential_types/sendgrid_api_key_injectors.json') }}"
 
 scm_credentials:
   - name: "[CICD] Red Hat Ansible Automation Platform Credential"
@@ -53,6 +57,18 @@ scm_credentials:
     host: "https://{{ aap_host }}"
     user: "{{ aap_user }}"
     pass: "{{ aap_pass }}"
+
+scm_custom_credentials:
+  - name: "[CICD] GitLab Access Token"
+    desc: "GitLab Access Token"
+    org: Default
+    type: "GitLab Access Token"
+    token: "{{ vault_gitlab_access_token }}"
+  - name: "[CICD] Sengrid API Key"
+    desc: "Sengrid API Key"
+    org: Default
+    type: "Sengrid API Key"
+    token: "{{ vault_sendgrid_api_key }}"
 
 scm_projects:
   - name: "[CICD] Ansible CI/CD"
@@ -69,42 +85,42 @@ scm_jobtemplates:
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/02-publish-collection-hub.yml"
     creds: []
-    execution_environment: ""
+    execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Promotion DEV -> PRO"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/03-promotion.yml"
     creds: []
-    execution_environment: ""
+    execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Notify Tests Reports"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/01-notify-tests-reports.yml"
     creds: []
-    execution_environment: ""
+    execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Create new Pipeline from Template"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/create_workflow_cicd.yml"
     creds: "[CICD] Red Hat Ansible Automation Platform Credential"
-    execution_environment: ""
+    execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Create new GitLab Project"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
-    creds: []
-    execution_environment: ""
+    creds: "[CICD] GitLab Access Token"
+    execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Notify Onboarded Project"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/notify_onboarded_project.yml"
-    creds: []
-    execution_environment: ""
+    creds: "[CICD] Sengrid API Key"
+    execution_environment: "ee-ansible-demoday"
 
 scm_jobtemplates_survey:
   - name: "[JT][CICD] Sanity Tests"
@@ -113,7 +129,7 @@ scm_jobtemplates_survey:
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/00-sanity.yml"
     creds: []
-    execution_environment: "ansible-ee-ansible-test"
+    execution_environment: "ee-ansible-demoday"
     survey_enabled: yes
     survey_spec: "{{ lookup('file', 'survey_specs/00-sanity-test-survey.json') }}"
   - name: "[JT][CICD] Units Tests"
@@ -122,7 +138,7 @@ scm_jobtemplates_survey:
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/00-units.yml"
     creds: []
-    execution_environment: "ansible-ee-ansible-test"
+    execution_environment: "ee-ansible-demoday"
     survey_enabled: yes
     survey_spec: "{{ lookup('file', 'survey_specs/00-units-tests-survey.json') }}"
   - name: "[JT][CICD] Integration Tests"
@@ -131,7 +147,7 @@ scm_jobtemplates_survey:
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/00-integration.yml"
     creds: []
-    execution_environment: "ansible-ee-ansible-test"
+    execution_environment: "ee-ansible-demoday"
     survey_enabled: yes
     survey_spec: "{{ lookup('file', 'survey_specs/00-integration-tests-survey.json') }}"
 
@@ -149,7 +165,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: Publish Collection to Automation Hub
+            - identifier: Notify Tests Reports
           failure_nodes: []
           always_nodes: []
           credentials: []  
@@ -188,7 +204,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: "Publish Collection to Automation Hub"
+            - identifier: Publish Collection to Automation Hub
           failure_nodes: []
           always_nodes: []
           credentials: []

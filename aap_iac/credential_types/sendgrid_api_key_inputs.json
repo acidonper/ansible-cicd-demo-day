@@ -3,7 +3,7 @@
     {
       "id": "token",
       "type": "string",
-      "label": "GitLab Personal Access Token",
+      "label": "Sengrid API Key",
       "secret": true
     }
   ],

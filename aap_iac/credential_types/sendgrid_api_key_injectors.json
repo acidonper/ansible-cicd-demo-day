@@ -1,0 +1,5 @@
+{
+  "env": {
+    "SENGRID_API_KEY": "{{ token }}"
+  }
+}

@@ -33,13 +33,13 @@ hosts:
   - name: localhost
     desc: ""
     inv: "Automation Controller Inventory"
-    vars: "ansible_connection: local"
+    vars: { "ansible_connection": "local" }
 
 execution_enviroment: 
   - name: ansible-ee-ansible-test
     desc: quay.io/adelahoz/ansible-ee-ansible-test
 
-scm_credential_types:
+scm_custom_credential_types:
   - name: "GitLab Access Token"
     kind: cloud
     inputs: "{{ lookup('file', 'credential_types/gitlab_acces_token_inputs.json') }}"
@@ -53,6 +53,13 @@ scm_credentials:
     host: "https://{{ aap_host }}"
     user: "{{ aap_user }}"
     pass: "{{ aap_pass }}"
+
+scm_custom_credentials:
+  - name: "[CICD] GitLab Access Token"
+    desc: "GitLab Access Token"
+    org: Default
+    type: "GitLab Access Token"
+    token: "{{ vault_gitlab_access_token }}"
 
 scm_projects:
   - name: "[CICD] Ansible CI/CD"
@@ -96,7 +103,7 @@ scm_jobtemplates:
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
-    creds: []
+    creds: "[CICD] GitLab Access Token"
     execution_environment: ""
   - name: "[JT][CICD] Notify Onboarded Project"
     org: Default
@@ -149,7 +156,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: Publish Collection to Automation Hub
+            - identifier: Notify Tests Reports
           failure_nodes: []
           always_nodes: []
           credentials: []  
@@ -188,7 +195,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: "Publish Collection to Automation Hub"
+            - identifier: Publish Collection to Automation Hub
           failure_nodes: []
           always_nodes: []
           credentials: []

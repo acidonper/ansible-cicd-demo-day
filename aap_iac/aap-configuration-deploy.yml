@@ -123,7 +123,7 @@
         name: "{{ item.name }}"
         description: "{{ item.desc }}"
         inventory: "{{ item.inv }}"
-        # variables: "{{ item.vars }}"
+        variables: "{{ item.vars }}"
         controller_host: "{{ aap_host }}"
         controller_username: "{{ aap_user }}"
         controller_password: "{{ aap_pass }}"
@@ -148,7 +148,7 @@
         - execution_enviroment is defined
         - execution_enviroment|length > 0
 
-    - name: Create Credential Types
+    - name: Create Custom Credential Types
       ansible.controller.credential_type:
         name: "{{ item.name }}"
         kind: "{{ item.kind }}"
@@ -159,10 +159,10 @@
         controller_host: "{{ aap_host }}"
         controller_username: "{{ aap_user }}"
         controller_password: "{{ aap_pass }}"
-      loop: "{{ scm_credential_types }}"
+      loop: "{{ scm_custom_credential_types }}"
       when:
-        - scm_credential_types is defined
-        - scm_credential_types|length > 0
+        - scm_custom_credential_types is defined
+        - scm_custom_credential_types|length > 0
 
     - name: Create Credentials
       ansible.controller.credential:
@@ -181,6 +181,25 @@
         controller_username: "{{ aap_user }}"
         controller_password: "{{ aap_pass }}"
       loop: "{{ scm_credentials }}"
+      when:
+        - scm_credentials is defined
+        - scm_credentials|length > 0
+
+    - name: Create Custom Credentials
+      ansible.controller.credential:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        organization: "{{ item.org }}"
+        credential_type: "{{ item.type }}"
+        update_secrets: false
+        inputs:
+          token: "{{ item.token }}"
+        state: present
+        validate_certs: no
+        controller_host: "{{ aap_host }}"
+        controller_username: "{{ aap_user }}"
+        controller_password: "{{ aap_pass }}"
+      loop: "{{ scm_custom_credentials }}"
       when:
         - scm_credentials is defined
         - scm_credentials|length > 0

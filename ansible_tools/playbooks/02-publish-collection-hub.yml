@@ -2,6 +2,8 @@
 - name: Publish Collection to Automation Hub
   hosts: localhost
   gather_facts: false
+  vars:
+    validate_certs: false
 
   tasks: 
     - name: get list of groups

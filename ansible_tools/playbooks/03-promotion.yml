@@ -1,4 +1,35 @@
-- hosts: localhost
-  connection: local
-  tasks: 
-    - ping:
+---
+- name: This is a Units testing collection
+  hosts: localhost
+  gather_facts: no
+  vars:
+    validate_certs: false
+
+  tasks:
+
+    - name: Git checkout
+      ansible.builtin.git:
+        repo: '{{ gitlab_repository }}'
+        dest: '/tmp/ansible-collection-folder'
+        version: '{{ gitlab_branch }}'
+
+    - name: Read Galaxy definition file
+      ansible.builtin.slurp:
+        src: '/tmp/ansible-collection-folder/ansible_collections/{{ ansible_namespace }}/{{ ansible_collection }}/galaxy.yml'
+      register: collection_galaxy_file
+
+    - name: Define the dicctionary data
+      set_fact:
+        galaxy_dict: "{{ collection_galaxy_file['content'] | b64decode | from_yaml }}"
+
+    - name: approve Ansible  Collection
+      ansible.builtin.uri:
+        url: "https://{{ controller_ah_fqdn }}/api/galaxy/v3/collections/{{ ansible_namespace }}/{{ ansible_collection }}/versions/{{ galaxy_dict.version  }}/move/staging/published/"
+        method: POST
+        body_format: json
+        validate_certs: "{{ validate_certs }}"
+        headers:
+          Authorization: "Token {{ automation_hub_private_api_token }}"
+        status_code:
+          - 200
+          - 202

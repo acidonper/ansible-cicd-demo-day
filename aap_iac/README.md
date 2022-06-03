@@ -21,7 +21,7 @@ In order to create the objects which have been included above, It is required to
 
 - vars/aap-config.yml -> Configuration as a code file which includes organization, users, teams, projects, credentials and Job Template definitions. On the other hand, includes connection parameters to _Ansible Automation Platform_ Cluster installed.
 
-#### Private
+#### Privates
 
 - vault/vault.yml -> This file included encrypted variables that contains sensitive information.
 
@@ -70,12 +70,12 @@ The programmatic procedure includes both the creation and deletion of the object
 
 -   Deploy Red Hat _Ansible Automation Platform_ programmatic configuration
 ```
-$ ansible-playbook aap-configuration-deploy.yml
+$ ansible-navigator run aap-configuration-deploy.yml --ask-vault-password -m stdout
 ```
 
 -   Delete Red Hat _Ansible Automation Platform_ programmatic configuration
 ```
-$ ansible-playbook aap-configuration-undeploy.yml
+$ ansible-navigator run aap-configuration-undeploy.yml --ask-vault-password -m stdout
 ```
 
 ## Authors

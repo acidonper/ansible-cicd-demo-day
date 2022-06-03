@@ -6,6 +6,7 @@
   connection: local
   gather_facts: false
   vars_files:
+    - ./vault/vault.yml
     - ./vars/aap-config.yml
   tasks:
 
@@ -171,35 +172,13 @@
         organization: "{{ item.org }}"
         credential_type: "{{ item.type }}"
         update_secrets: false
-        inputs:
-          host: "{{ item.host }}"
-          username: "{{ item.user }}"
-          password: "{{ item.pass }}"
+        inputs: "{{ item.inputs }}"
         state: present
         validate_certs: no
         controller_host: "{{ aap_host }}"
         controller_username: "{{ aap_user }}"
         controller_password: "{{ aap_pass }}"
       loop: "{{ scm_credentials }}"
-      when:
-        - scm_credentials is defined
-        - scm_credentials|length > 0
-
-    - name: Create Custom Credentials
-      ansible.controller.credential:
-        name: "{{ item.name }}"
-        description: "{{ item.desc }}"
-        organization: "{{ item.org }}"
-        credential_type: "{{ item.type }}"
-        update_secrets: false
-        inputs:
-          token: "{{ item.token }}"
-        state: present
-        validate_certs: no
-        controller_host: "{{ aap_host }}"
-        controller_username: "{{ aap_user }}"
-        controller_password: "{{ aap_pass }}"
-      loop: "{{ scm_custom_credentials }}"
       when:
         - scm_credentials is defined
         - scm_credentials|length > 0

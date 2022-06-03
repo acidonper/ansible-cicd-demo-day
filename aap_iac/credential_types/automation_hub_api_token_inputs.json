@@ -1,0 +1,19 @@
+{
+  "fields": [
+    {
+      "id": "token",
+      "type": "string",
+      "label": "Automation Hub API Token",
+      "secret": true
+    },
+    {
+      "id": "host",
+      "type": "string",
+      "label": "Automation Hub Host"
+    }
+  ],
+  "required": [
+    "token",
+    "host"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "env": {
+    "HUB_API_TOKEN": "{{ token }}",
+    "HUB_HOST": "{{ host }}"
+  }
+}

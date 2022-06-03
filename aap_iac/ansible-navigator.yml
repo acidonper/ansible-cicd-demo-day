@@ -1,0 +1,21 @@
+---
+ansible-navigator:
+  ansible:
+    inventory:
+      entries:
+      - ./inventory
+  app: run
+  editor:
+    command: vim_from_setting
+    console: false
+  execution-environment:
+    container-engine: podman
+    image: quay.io/demoday/ee-demoday-image:1.0
+    pull:
+      policy: missing
+  logging:
+    append: true
+    file: /tmp/navigator/ansible-navigator.log
+    level: debug
+  playbook-artifact:
+    enable: false

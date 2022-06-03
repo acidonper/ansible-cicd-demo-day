@@ -24,12 +24,12 @@
 
     - name: approve Ansible  Collection
       ansible.builtin.uri:
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/v3/collections/{{ ansible_namespace }}/{{ ansible_collection }}/versions/{{ galaxy_dict.version  }}/move/staging/published/"
+        url: "https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/v3/collections/{{ ansible_namespace }}/{{ ansible_collection }}/versions/{{ galaxy_dict.version  }}/move/staging/published/"
         method: POST
         body_format: json
         validate_certs: "{{ validate_certs }}"
         headers:
-          Authorization: "Token {{ automation_hub_private_api_token }}"
+          Authorization: "Token {{ lookup('env', 'HUB_API_TOKEN') }}"
         status_code:
           - 200
           - 202

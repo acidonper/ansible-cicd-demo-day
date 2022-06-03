@@ -9,21 +9,21 @@
     - name: get list of groups
       ansible.builtin.uri:
         return_content: true
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/groups/"
+        url: "https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/_ui/v1/groups/"
         method: GET
         body_format: json
         headers:
-          Authorization: "Token {{ automation_hub_private_api_token }}"
+          Authorization: "Token {{ lookup('env', 'HUB_API_TOKEN') }}"
         validate_certs: "{{ validate_certs }}"
       register: group_list
 
     - name: create group admin
       ansible.builtin.uri:
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/groups/"
+        url: "https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/_ui/v1/groups/"
         method: POST
         body_format: json
         headers:
-          Authorization: "Token {{ automation_hub_private_api_token }}"
+          Authorization: "Token {{ lookup('env', 'HUB_API_TOKEN') }}"
         status_code:
           - 200
           - 201
@@ -35,35 +35,35 @@
     - name: check namespace exists
       ansible.builtin.uri:
         return_content: true
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/my-namespaces/{{ ansible_namespace }}/"
+        url: "https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/_ui/v1/my-namespaces/{{ ansible_namespace }}/"
         method: GET
         body_format: json
         validate_certs: "{{ validate_certs }}"
         headers:
-          Authorization: "Token {{ automation_hub_private_api_token }}"
+          Authorization: "Token {{ lookup('env', 'HUB_API_TOKEN') }}"
       register: namespace_list
       ignore_errors: true
 
     - name: refresh list of groups again to get group IDs
       ansible.builtin.uri:
         return_content: true
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/groups/"
+        url: "https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/_ui/v1/groups/"
         method: GET
         body_format: json
         validate_certs: "{{ validate_certs }}"
         headers:
-          Authorization: "Token {{ automation_hub_private_api_token }}"
+          Authorization: "Token {{ lookup('env', 'HUB_API_TOKEN') }}"
       register: group_list
 
     - name: create namespace
       ansible.builtin.uri:
         return_content: true
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/my-namespaces/"
+        url: "https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/_ui/v1/my-namespaces/"
         method: POST
         body_format: json
         validate_certs: "{{ validate_certs }}"
         headers:
-          Authorization: "Token {{ automation_hub_private_api_token }}"
+          Authorization: "Token {{ lookup('env', 'HUB_API_TOKEN') }}"
         body:
           "name": "{{ ansible_namespace }}"
           "groups":
@@ -81,10 +81,10 @@
     - name: check if collection already exists
       ansible.builtin.uri:
         return_content: true
-        url: https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/repo/published/{{ansible_collection}}/general/
+        url: https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/_ui/v1/repo/published/{{ansible_collection}}/general/
         validate_certs: "{{ validate_certs }}"
         headers:
-          Authorization: "Token {{ automation_hub_private_api_token }}"
+          Authorization: "Token {{ lookup('env', 'HUB_API_TOKEN') }}"
         method: GET
       register: namespace_collection
       ignore_errors: true
@@ -107,7 +107,7 @@
 
     - name: publish collection on private automation hub
       ansible.builtin.shell: 
-        cmd: ansible-galaxy collection publish -c -s https://{{ controller_ah_fqdn }}/api/galaxy/content/inbound-{{ ansible_namespace }}/ --api-key {{ automation_hub_private_api_token }} {{ collection_path }}
+        cmd: ansible-galaxy collection publish -c -s https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/content/inbound-{{ ansible_namespace }}/ --api-key {{ lookup('env', 'HUB_API_TOKEN') }} {{ collection_path }}
       when:
         - namespace_collection.status == 404
         - not validate_certs | bool

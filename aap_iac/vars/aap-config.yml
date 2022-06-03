@@ -51,27 +51,39 @@ scm_custom_credential_types:
     kind: cloud
     inputs: "{{ lookup('file', 'credential_types/sendgrid_api_key_inputs.json') }}"
     injectors: "{{ lookup('file', 'credential_types/sendgrid_api_key_injectors.json') }}"
+  - name: "Automation Hub API Token"
+    kind: cloud
+    inputs: "{{ lookup('file', 'credential_types/automation_hub_api_token_inputs.json') }}"
+    injectors: "{{ lookup('file', 'credential_types/automation_hub_api_token_injectors.json') }}"
 
 scm_credentials:
   - name: "[CICD] Red Hat Ansible Automation Platform Credential"
     desc: "Red Hat Ansible Automation Platform Credential"
     org: Default
     type: "Red Hat Ansible Automation Platform"
-    host: "https://{{ aap_host }}"
-    user: "{{ aap_user }}"
-    pass: "{{ aap_pass }}"
-
-scm_custom_credentials:
+    inputs:
+      host: "https://{{ aap_host }}"
+      username: "{{ aap_user }}"
+      password: "{{ aap_pass }}"
   - name: "[CICD] GitLab Access Token"
     desc: "GitLab Access Token"
     org: Default
     type: "GitLab Access Token"
-    token: "{{ vault_gitlab_access_token }}"
+    inputs:
+      token: "{{ vault_gitlab_access_token }}"
   - name: "[CICD] Sengrid API Key"
     desc: "Sengrid API Key"
     org: Default
     type: "Sengrid API Key"
-    token: "{{ vault_sendgrid_api_key }}"
+    inputs:
+      token: "{{ vault_sendgrid_api_key }}"
+  - name: "[CICD] Automation Hub API Token"
+    desc: "Automation Hub API Token"
+    org: Default
+    type: "Automation Hub API Token"
+    inputs:
+      token: "{{ hub_token }}"
+      host: "{{ hub_host }}"
 
 scm_projects:
   - name: "[CICD] Ansible CI/CD"
@@ -87,14 +99,14 @@ scm_jobtemplates:
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/02-publish-collection-hub.yml"
-    creds: []
+    creds: "[CICD] Automation Hub API Token"
     execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Promotion DEV -> PRO"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/03-promotion.yml"
-    creds: []
+    creds: "[CICD] Automation Hub API Token"
     execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Notify Tests Reports"
     org: Default

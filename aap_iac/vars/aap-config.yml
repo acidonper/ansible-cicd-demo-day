@@ -1,6 +1,9 @@
-aap_host: aap.apps.ocp4cluster.ocp4.cfernand.com
-aap_user: admin
-aap_pass: redhat
+aap_host: "{{ vault_aap_host }}"
+aap_user: "{{ vault_aap_user }}"
+aap_pass: "{{ vault_aap_pass }}"
+
+hub_host: "{{ vault_hub_host }}"
+hub_token: "{{ vault_hub_token }}"
 
 domain: demoday.com
 

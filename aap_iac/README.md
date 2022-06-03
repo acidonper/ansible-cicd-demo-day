@@ -17,9 +17,23 @@ The following list includes the _Ansible Automation Platform_'s elements which c
 
 In order to create the objects which have been included above, It is required to include their definition in a variables file and configure the inventory file in order to link the _Ansible Automation Platform_ installation.
 
-### vars
+### Variables
 
--   aap-config.yml -> Configuration as a code file which includes organization, users, teams, projects, credentials and Job Template definitions. On the other hand, includes connection parameters to _Ansible Automation Platform_ Cluster installed.
+- vars/aap-config.yml -> Configuration as a code file which includes organization, users, teams, projects, credentials and Job Template definitions. On the other hand, includes connection parameters to _Ansible Automation Platform_ Cluster installed.
+
+#### Private
+
+- vault/vault.yml -> This file included encrypted variables that contains sensitive information.
+
+| Variable                  | Type   | Example                   |
+| ------------------------- | ------ | ------------------------- |
+| vault_gitlab_access_token | String | aasd2123sad234123s        |
+| vault_sendgrid_api_key    | String | AsreDqeEEr12341232        |
+| vault_aap_host            | String | aap.mycluster.com         |
+| vault_aap_user            | String | admin                     |
+| vault_aap_pass            | String | password                  |
+| vault_hub_host            | String | hub.mycluster.com         |
+| vault_hub_token           | String | a1231234asdasd12334sddsf1 |
 
 ## Requirements
 

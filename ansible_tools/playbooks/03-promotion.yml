@@ -33,3 +33,35 @@
         status_code:
           - 200
           - 202
+
+    - name: Create SSH directory
+      ansible.builtin.file:
+        path: /home/runner/.ssh
+        state: directory
+        owner: runner
+        group: runner
+        mode: '0700'
+
+    - name: Create ssh key connection
+      ansible.builtin.copy: 
+        dest: "/home/runner/.ssh/id_rsa"
+        content: "{{ lookup('env', 'GITLAB_PRIVATE_KEY') }}"
+        owner: runner
+        group: runner
+        mode: '0600'
+
+    - name: Git checkout SSH
+      ansible.builtin.git:
+        repo: "{{ gitlab_repository | regex_replace('https://', 'git@') | regex_replace('com/', 'com:') }}"
+        dest: '/tmp/ansible-collection-folder-ssh'
+        version: 'master'
+
+    - name: Merge Develop Changes
+      ansible.builtin.shell: 
+        cmd: git merge develop
+        chdir: '/tmp/ansible-collection-folder-ssh'
+
+    - name: Push to Master
+      ansible.builtin.shell: 
+        cmd: git push
+        chdir: '/tmp/ansible-collection-folder-ssh'

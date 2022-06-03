@@ -25,15 +25,16 @@ In order to create the objects which have been included above, It is required to
 
 - vault/vault.yml -> This file included encrypted variables that contains sensitive information.
 
-| Variable                  | Type   | Example                   |
-| ------------------------- | ------ | ------------------------- |
-| vault_gitlab_access_token | String | aasd2123sad234123s        |
-| vault_sendgrid_api_key    | String | AsreDqeEEr12341232        |
-| vault_aap_host            | String | aap.mycluster.com         |
-| vault_aap_user            | String | admin                     |
-| vault_aap_pass            | String | password                  |
-| vault_hub_host            | String | hub.mycluster.com         |
-| vault_hub_token           | String | a1231234asdasd12334sddsf1 |
+| Variable                  | Type             | Example                                |
+| ------------------------- | ---------------- | -------------------------------------- |
+| vault_gitlab_access_token | String           | aasd2123sad234123s                     |
+| vault_sendgrid_api_key    | String           | AsreDqeEEr12341232                     |
+| vault_aap_host            | String           | aap.mycluster.com                      |
+| vault_aap_user            | String           | admin                                  |
+| vault_aap_pass            | String           | password                               |
+| vault_hub_host            | String           | hub.mycluster.com                      |
+| vault_hub_token           | String           | a1231234asdasd12334sddsf1              |
+| vault_gitlab_private_key  | Multiline String | -----BEGIN OPENSSH PRIVATE KEY-----... |
 
 ## Requirements
 

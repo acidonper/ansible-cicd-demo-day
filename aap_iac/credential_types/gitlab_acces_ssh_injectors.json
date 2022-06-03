@@ -1,0 +1,5 @@
+{
+  "env": {
+    "GITLAB_PRIVATE_KEY": "{{ gitlab_private_key }}"
+  }
+}

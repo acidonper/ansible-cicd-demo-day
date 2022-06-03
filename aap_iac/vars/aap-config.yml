@@ -55,6 +55,10 @@ scm_custom_credential_types:
     kind: cloud
     inputs: "{{ lookup('file', 'credential_types/automation_hub_api_token_inputs.json') }}"
     injectors: "{{ lookup('file', 'credential_types/automation_hub_api_token_injectors.json') }}"
+  - name: "GitLab SSH Key"
+    kind: cloud
+    inputs: "{{ lookup('file', 'credential_types/gitlab_acces_ssh_inputs.json') }}"
+    injectors: "{{ lookup('file', 'credential_types/gitlab_acces_ssh_injectors.json') }}"
 
 scm_credentials:
   - name: "[CICD] Red Hat Ansible Automation Platform Credential"
@@ -84,6 +88,12 @@ scm_credentials:
     inputs:
       token: "{{ hub_token }}"
       host: "{{ hub_host }}"
+  - name: "[CICD] GitLab SSH Key"
+    desc: "GitLab SSH Key"
+    org: Default
+    type: "GitLab SSH Key"
+    inputs:
+      gitlab_private_key: "{{ vault_gitlab_private_key }}"
 
 scm_projects:
   - name: "[CICD] Ansible CI/CD"

@@ -1,0 +1,15 @@
+{
+  "fields": [
+    {
+      "id": "gitlab_private_key",
+      "type": "string",
+      "label": "GitLab SSH Key",
+      "secret": true,
+      "format": "ssh_private_key",
+      "multiline": true
+    }
+  ],
+  "required": [
+    "gitlab_private_key"
+  ]
+}

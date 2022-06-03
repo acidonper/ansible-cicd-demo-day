@@ -33,7 +33,7 @@
     - name: check namespace exists
       ansible.builtin.uri:
         return_content: true
-        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/my-namespaces/{{ansible_namespace}}/"
+        url: "https://{{ controller_ah_fqdn }}/api/galaxy/_ui/v1/my-namespaces/{{ ansible_namespace }}/"
         method: GET
         body_format: json
         validate_certs: "{{ validate_certs }}"
@@ -63,7 +63,7 @@
         headers:
           Authorization: "Token {{ automation_hub_private_api_token }}"
         body:
-          "name": "{{ansible_namespace}}"
+          "name": "{{ ansible_namespace }}"
           "groups":
             - "name": "admin"
               "id": "{{ group_list.json.data[0].id }}"
@@ -101,7 +101,7 @@
       register: collection_tar_path
 
     - set_fact:
-        collection_path: "{{collection_tar_path.stdout | regex_replace('^(.*)at\\s(?P<path>.+)$', '\\g<path>') }}"
+        collection_path: "{{ collection_tar_path.stdout | regex_replace('^(.*)at\\s(?P<path>.+)$', '\\g<path>') }}"
 
     - name: publish collection on private automation hub
       ansible.builtin.shell: 

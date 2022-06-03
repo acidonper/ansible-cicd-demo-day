@@ -1,4 +1,16 @@
-- hosts: localhost
-  connection: local
-  tasks: 
-    - ping:
+---
+- name: Notify Onboarded Project
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Send email via Sendgrid
+      community.general.sendgrid:
+        api_key: "{{ sendgrid_api_key | default(omit) }}"
+        from_address: "{{ sendgrid_from_email_address }}"
+        to_addresses: "{{ sendgrid_to_email_addresses }}"
+        subject: "[CICD] New Onboarded Project"
+        body: "{{ lookup('template', 'onboarded_project.html.j2') }}"
+        html_body: yes
+      run_once: True
+      when: send_email_sendgrid | bool

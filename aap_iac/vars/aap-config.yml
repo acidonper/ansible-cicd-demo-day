@@ -38,7 +38,7 @@ hosts:
   - name: localhost
     desc: ""
     inv: "Automation Controller Inventory"
-    vars: { "ansible_connection": "local", "ansible_python_interpreter": "{{ ansible_playbook_python }}" }
+    vars: { "ansible_connection": "local", "ansible_python_interpreter": '{{ ansible_playbook_python }}' }
 
 execution_enviroment: 
   - name: ee-ansible-demoday

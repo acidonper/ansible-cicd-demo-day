@@ -16,6 +16,6 @@
         method: POST
         body_format: json
         body:
-          text: "{{ result_coverage | default(default_result_coverage, true) }}"
+          text: "{{ result_coverage.stdout | default(default_result_coverage, true) }}"
         validate_certs: false
         status_code: 200

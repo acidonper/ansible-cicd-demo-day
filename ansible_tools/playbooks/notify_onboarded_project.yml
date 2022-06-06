@@ -15,7 +15,7 @@
         api_key: "{{ lookup('env','SENGRID_API_KEY') }}"
         from_address: "{{ sendgrid_from_email_address }}"
         to_addresses: "{{ gitlab_email_address }}"
-        subject: "[CICD] Project Information - {{ gitlab_project_name }}"
+        subject: "[CICD] Project Information"
         body: "The most recent Ansible deployment was successful."
         #body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
         #html_body: yes

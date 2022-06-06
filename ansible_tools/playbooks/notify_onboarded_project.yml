@@ -16,10 +16,10 @@
  
     - name: Send Onboarded Project Information
       community.general.sendgrid:
-        # api_key: "{{ lookup('env','SENGRID_API_KEY') }}"
-        api_key: "{{ sendgrid_api_key }}"
+        api_key: "{{ lookup('env','SENGRID_API_KEY') }}"
+        # api_key: "{{ sendgrid_api_key }}"
         from_address: "cfernand@redhat.com"
-        to_addresses: "ansibledemoday@gmail.com.com"
+        to_addresses: "ansibledemoday@gmail.com"
         subject: "Deployment success."
         body: "The most recent Ansible deployment was successful."
         #from_address: "{{ sendgrid_from_email_address }}"

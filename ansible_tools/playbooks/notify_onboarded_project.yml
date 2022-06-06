@@ -3,15 +3,36 @@
   hosts: all
   gather_facts: false
   vars:
-    sendgrid_from_email_address: "ansibledemoday@redhat.com"
+    sendgrid_from_email_address: ansibledemoday@redhat.com
 
   tasks:
+#    - name: Send Onboarded Project Information
+#      community.general.mail:
+#        host: smtp.gmail.com
+#        port: 587
+#        username: "{{ sendgrid_username }}"
+#        password: "{{ sendgrid_password }}"
+#        to: "ansibledemoday@gmail.com"
+#        subject: Ansible-report
+#        body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
+#        subtype: html
+#      delegate_to: localhost
+
+    - name: debug
+        var: sendgrid_api_key
+
     - name: Send Onboarded Project Information
       community.general.sendgrid:
-        api_key: "{{ lookup('env', 'SENGRID_API_KEY') }}"
-        from_address: "{{ sendgrid_from_email_address }}"
-        to_addresses: "{{ gitlab_email_address }}"
-        subject: "[CICD] Project Information - {{ gitlab_project_name }}"
-        body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
-        html_body: yes
-      run_once: True
+        #username: "{{ sendgrid_username }}"
+        #password: "{{ sendgrid_password }}"
+        api_key: "{{ sendgrid_api_key | default(omit) }}"
+        #from_address: "{{ sendgrid_from_email_address }}"
+        #to_addresses: "{{ gitlab_email_address }}"
+        #subject: "[CICD] Project Information - {{ gitlab_project_name }}"
+        #body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
+        #html_body: yes
+        from_address: "cfernand@redhat.com"
+        to_addresses: "ansibledemoday@redhat.com"
+        subject: "Deployment success."
+        body: "The most recent Ansible deployment was successful."
+      delegate_to: localhost

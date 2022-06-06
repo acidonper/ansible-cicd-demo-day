@@ -1,13 +1,13 @@
 {
   "fields": [
     {
-      "id": "token",
+      "id": "sendgrid_api_key",
       "type": "string",
       "label": "Sengrid API Key",
       "secret": true
     }
   ],
   "required": [
-    "token"
+    "sendgrid_api_key"
   ]
 }

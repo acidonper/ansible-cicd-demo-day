@@ -38,11 +38,11 @@ hosts:
   - name: localhost
     desc: ""
     inv: "Automation Controller Inventory"
-    vars: { "ansible_connection": "local" }
+    vars: { "ansible_connection": "local", "ansible_python_interpreter": "{{ ansible_playbook_python }}" }
 
 execution_enviroment: 
   - name: ee-ansible-demoday
-    desc: quay.io/demoday/ee-demoday-image:1.0
+    desc: quay.io/demoday/ee-demoday-image:1.1
 
 scm_custom_credential_types:
   - name: "GitLab Access Token"
@@ -80,13 +80,13 @@ scm_credentials:
     org: Default
     type: "GitLab Access Token"
     inputs:
-      token: "{{ vault_gitlab_access_token }}"
+      gitlab_access_token: "{{ vault_gitlab_access_token }}"
   - name: "[CICD] Sengrid API Key"
     desc: "Sengrid API Key"
     org: Default
     type: "Sengrid API Key"
     inputs:
-      token: "{{ vault_sendgrid_api_key }}"
+      sendgrid_api_key: "{{ vault_sendgrid_api_key }}"
   - name: "[CICD] Automation Hub API Token"
     desc: "Automation Hub API Token"
     org: Default

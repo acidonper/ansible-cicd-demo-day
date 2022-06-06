@@ -37,7 +37,6 @@
         body_format: json
         headers:
           Content-Type: application/json
-          # Authorization: "Bearer {{ lookup('env', 'CONTROLLER_OAUTH_TOKEN') }}"
         validate_certs: "{{ lookup('env', 'CONTROLLER_VERIFY_SSL') }}"
       register: aap_new_workflow_webhook
   
@@ -46,3 +45,8 @@
         data:
           aap_new_workflow_webhook_url: "{{ lookup('env', 'CONTROLLER_HOST') }}/api/v2/workflow_job_templates/{{ aap_new_workflow_id }}/gitlab/"
           aap_new_workflow_webhook_key:  "{{ aap_new_workflow_webhook.json.webhook_key }}"
+
+    - name: Set Workflow Job Template URL
+      ansible.builtin.set_stats:
+        data:
+          aap_new_workflow_url: "{{ lookup('env', 'CONTROLLER_HOST') }}/api/v2/workflow_job_templates/{{ aap_new_workflow_id }}"

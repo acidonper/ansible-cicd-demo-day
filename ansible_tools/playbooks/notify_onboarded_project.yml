@@ -19,13 +19,14 @@
 #      delegate_to: localhost
 
     - name: debug
+      ansible.builtin.debug:
         var: sendgrid_api_key
 
     - name: Send Onboarded Project Information
       community.general.sendgrid:
         #username: "{{ sendgrid_username }}"
         #password: "{{ sendgrid_password }}"
-        api_key: "{{ sendgrid_api_key | default(omit) }}"
+        api_key: "{{ sendgrid_api_key }}"
         #from_address: "{{ sendgrid_from_email_address }}"
         #to_addresses: "{{ gitlab_email_address }}"
         #subject: "[CICD] Project Information - {{ gitlab_project_name }}"

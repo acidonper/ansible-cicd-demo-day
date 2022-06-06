@@ -204,7 +204,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: Units Tests
+            - identifier: Notify Tests Reports
           failure_nodes: []
           always_nodes: []
           credentials: []  
@@ -217,7 +217,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: Integration Tests
+            - identifier: Notify Tests Reports
           failure_nodes: []
           always_nodes: []
           credentials: []  
@@ -235,6 +235,7 @@ scm_workflowjobtemplates:
           always_nodes: []
           credentials: []  
       - identifier: Notify Tests Reports
+        all_parents_must_converge: yes
         unified_job_template:
           organization:
             name: Default

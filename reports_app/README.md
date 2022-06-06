@@ -32,9 +32,34 @@ NAME           TYPE     FROM          STATUS     STARTED              DURATION
 appreports-1   Source   Git@052b631   Complete   About a minute ago   1m5s
 ```
 
+Additionally, once the container image is built, it is possible to export this new image to an external image registry following the next procedure:
+
+- Login to the internal registry from podman
+
+```$bash
+oc patch configs.imageregistry.operator.openshift.io/cluster --patch '{"spec":{"defaultRoute":true}}' --type=merge
+HOST=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+podman login -u kubeadmin -p $(oc whoami -t) --tls-verify=false $HOST
+```
+
+- Login to the external container registry
+
+```$bash
+REGISTRY_SERVER=quay.io
+podman login $REGISTRY_SERVER
+```
+
+- Copy the container image through skopeo
+
+```$bash
+skopeo copy docker://$HOST/app-report-cicd/appreports:develop docker://$REGISTRY_SERVER/acidonpe/appreports:latest --src-tls-verify=false
+```
+
 ### Deployment
 
 It is possible to deploy the application in Openshift easily through applying some k8s objects descriptors once the container image has been built. 
+
+#### Internal Registry
 
 Please follow the next step to deploy this application in multiple environments:
 
@@ -60,6 +85,42 @@ appreports   appreports-app-report-dev.apps.aap.sandbox1672.opentlc.com         
 oc new-project app-report-pro
 
 oc apply -f ./openshift/deploy-internal.yaml -n app-report-pro
+
+oc get pod -n app-report-pro
+NAME                          READY   STATUS    RESTARTS   AGE
+appreports-79f7c74c64-bmpwq   1/1     Running   0          1m
+
+oc get route -n app-report-pro
+NAME         HOST/PORT                                                    PATH   SERVICES     PORT   TERMINATION   WILDCARD
+appreports   appreports-app-report-pro.apps.aap.sandbox1672.opentlc.com          appreports   8080                 None
+```
+
+#### External Registry
+
+Please follow the next step to deploy this application in multiple environments:
+
+- Development
+
+```$bash
+oc new-project app-report-dev
+
+oc apply -f ./openshift/deploy-quay.yaml -n app-report-dev
+
+oc get pod -n app-report-dev
+NAME                          READY   STATUS    RESTARTS   AGE
+appreports-79f7c74c64-2gx2p   1/1     Running   0          12m
+
+oc get route -n app-report-dev
+NAME         HOST/PORT                                                    PATH   SERVICES     PORT   TERMINATION   WILDCARD
+appreports   appreports-app-report-dev.apps.aap.sandbox1672.opentlc.com          appreports   8080                 None
+```
+
+- Production
+
+```$bash
+oc new-project app-report-pro
+
+oc apply -f ./openshift/deploy-quay.yaml -n app-report-pro
 
 oc get pod -n app-report-pro
 NAME                          READY   STATUS    RESTARTS   AGE

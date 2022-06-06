@@ -204,7 +204,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: Notify Tests Reports
+            - identifier: Units Tests
           failure_nodes: []
           always_nodes: []
           credentials: []  
@@ -217,7 +217,7 @@ scm_workflowjobtemplates:
         credentials: []
         related:
           success_nodes:
-            - identifier: Notify Tests Reports
+            - identifier: Integration Tests
           failure_nodes: []
           always_nodes: []
           credentials: []  

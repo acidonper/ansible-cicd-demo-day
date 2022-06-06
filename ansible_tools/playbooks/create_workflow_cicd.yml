@@ -49,4 +49,4 @@
     - name: Set Workflow Job Template URL
       ansible.builtin.set_stats:
         data:
-          aap_new_workflow_url: "{{ lookup('env', 'CONTROLLER_HOST') }}/api/v2/workflow_job_templates/{{ aap_new_workflow_id }}"
+          aap_new_workflow_url: "{{ lookup('env', 'CONTROLLER_HOST') }}/#/templates/workflow_job_template/{{ aap_new_workflow_id }}/details"

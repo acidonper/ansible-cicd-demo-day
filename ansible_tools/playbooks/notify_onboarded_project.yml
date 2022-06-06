@@ -18,6 +18,9 @@
 #        subtype: html
 #      delegate_to: localhost
 
+    - name: debug
+        var: sendgrid_api_key
+
     - name: Send Onboarded Project Information
       community.general.sendgrid:
         #username: "{{ sendgrid_username }}"

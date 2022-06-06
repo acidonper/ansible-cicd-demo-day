@@ -6,7 +6,7 @@
     sendgrid_from_email_address: ansibledemoday@redhat.com
 
   tasks:
-    - name: debug:
+    - name: debug
       ansible.builtin.debug: 
         msg: "{{ lookup('env','SENGRID_API_KEY') }}"
  

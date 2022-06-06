@@ -1,0 +1,5 @@
+{
+  "env": {
+    "SLACK_API_WEBHOOK": "{{ slack_webhook }}"
+  }
+}

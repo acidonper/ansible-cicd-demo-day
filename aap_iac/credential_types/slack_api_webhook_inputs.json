@@ -1,0 +1,13 @@
+{
+  "fields": [
+    {
+      "id": "slack_webhook",
+      "type": "string",
+      "label": "Slack Webhook URL",
+      "secret": true
+    }
+  ],
+  "required": [
+    "slack_webhook"
+  ]
+}

@@ -1,4 +1,21 @@
 - hosts: localhost
   connection: local
+  gather_facts: false
   tasks: 
-    - ping:
+
+    - set_fact:
+        default_result_coverage: |
+          It is a notification from Ansible
+          that tries to included information
+          about a CI/CD pipeline execution
+      
+    - name: Sent notification via slack
+      ansible.builtin.uri:
+        return_content: true
+        url: "{{ lookup('env', 'SLACK_API_WEBHOOK') }}"
+        method: POST
+        body_format: json
+        body:
+          text: "{{ result_coverage | default(default_result_coverage, true) }}"
+        validate_certs: false
+        status_code: 200

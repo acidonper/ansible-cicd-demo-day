@@ -5,6 +5,8 @@ aap_pass: "{{ vault_aap_pass }}"
 hub_host: "{{ vault_hub_host }}"
 hub_token: "{{ vault_hub_token }}"
 
+slack_webhook: "{{ vault_slack_webhook }}"
+
 domain: demoday.com
 
 organizations:
@@ -59,6 +61,10 @@ scm_custom_credential_types:
     kind: cloud
     inputs: "{{ lookup('file', 'credential_types/gitlab_acces_ssh_inputs.json') }}"
     injectors: "{{ lookup('file', 'credential_types/gitlab_acces_ssh_injectors.json') }}"
+  - name: "Slack API Webhook"
+    kind: cloud
+    inputs: "{{ lookup('file', 'credential_types/slack_api_webhook_inputs.json') }}"
+    injectors: "{{ lookup('file', 'credential_types/slack_api_webhook_injectors.json') }}"
 
 scm_credentials:
   - name: "[CICD] Red Hat Ansible Automation Platform Credential"
@@ -94,6 +100,12 @@ scm_credentials:
     type: "GitLab SSH Key"
     inputs:
       gitlab_private_key: "{{ vault_gitlab_private_key }}"
+  - name: "[CICD] Slack API Webhook"
+    desc: "Slack API Webhook"
+    org: Default
+    type: "Slack API Webhook"
+    inputs:
+      slack_webhook: "{{ vault_slack_webhook }}"
 
 scm_projects:
   - name: "[CICD] Ansible CI/CD"
@@ -123,7 +135,7 @@ scm_jobtemplates:
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/01-notify-tests-reports.yml"
-    creds: []
+    creds: "[CICD] Slack API Webhook"
     execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Create new Pipeline from Template"
     org: Default

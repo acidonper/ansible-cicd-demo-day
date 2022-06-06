@@ -35,6 +35,7 @@ In order to create the objects which have been included above, It is required to
 | vault_hub_host            | String           | hub.mycluster.com                      |
 | vault_hub_token           | String           | a1231234asdasd12334sddsf1              |
 | vault_gitlab_private_key  | Multiline String | -----BEGIN OPENSSH PRIVATE KEY-----... |
+| vault_slack_webhook       | String           | https://hooks.slack.com/services/SQ..  |
 
 ## Requirements
 

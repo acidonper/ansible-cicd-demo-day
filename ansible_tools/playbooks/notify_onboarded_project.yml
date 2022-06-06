@@ -6,17 +6,17 @@
     sendgrid_from_email_address: ansibledemoday@redhat.com
 
   tasks:
-    - name: Send Onboarded Project Information
-      community.general.mail:
-        host: smtp.gmail.com
-        port: 587
-        username: "{{ sendgrid_username }}"
-        password: "{{ sendgrid_password }}"
-        to: "ansibledemoday@gmail.com"
-        subject: Ansible-report
-        body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
-        subtype: html
-      delegate_to: localhost
+#    - name: Send Onboarded Project Information
+#      community.general.mail:
+#        host: smtp.gmail.com
+#        port: 587
+#        username: "{{ sendgrid_username }}"
+#        password: "{{ sendgrid_password }}"
+#        to: "ansibledemoday@gmail.com"
+#        subject: Ansible-report
+#        body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
+#        subtype: html
+#      delegate_to: localhost
 
     - name: Send Onboarded Project Information
       community.general.sendgrid:

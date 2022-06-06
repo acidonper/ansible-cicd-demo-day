@@ -14,7 +14,7 @@
     ansible.builtin.shell:
       cmd: ansible-test integration --start-at api_manage
       chdir: "/tmp/ansible-collection-folder/ansible_collections/{{ ansible_namespace }}/{{ ansible_collection }}"
-    ignore_errors: yes  
+    #ignore_errors: yes  
     register: result_integration
 
   - name: "Report Integration Execution"

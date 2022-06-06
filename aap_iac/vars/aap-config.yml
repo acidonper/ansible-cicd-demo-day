@@ -43,6 +43,8 @@ hosts:
 execution_enviroment: 
   - name: ee-ansible-demoday
     desc: quay.io/demoday/ee-demoday-image:1.1
+  - name: ee-notify-demoday
+    desc: quay.io/demoday/ee-notify-image:1.3
 
 scm_custom_credential_types:
   - name: "GitLab Access Token"
@@ -157,7 +159,7 @@ scm_jobtemplates:
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/notify_onboarded_project.yml"
     creds: "[CICD] Sengrid API Key"
-    execution_environment: "ee-ansible-demoday"
+    execution_environment: "ee-notify-demoday"
 
 scm_jobtemplates_survey:
   - name: "[JT][CICD] Sanity Tests"

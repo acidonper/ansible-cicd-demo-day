@@ -12,7 +12,7 @@
         port: 587
         username: "{{ sendgrid_username }}"
         password: "{{ sendgrid_password }}"
-        to: "ansibledemoday@redhat.com"
+        to: "ansibledemoday@gmail.com"
         subject: Ansible-report
         body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
         subtype: html

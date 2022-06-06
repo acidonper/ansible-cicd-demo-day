@@ -3,12 +3,12 @@
   hosts: all
   gather_facts: false
   vars:
-    sendgrid_from_email_address: "ansibledemoday@redhat.com"
+    sendgrid_from_email_address: ansibledemoday@redhat.com
 
   tasks:
     - name: Send Onboarded Project Information
       community.general.sendgrid:
-        api_key: "{{ lookup('env', 'SENGRID_API_KEY') }}"
+        api_key: "{{ sendgrid_api_key | default(omit) }}"
         from_address: "{{ sendgrid_from_email_address }}"
         to_addresses: "{{ gitlab_email_address }}"
         subject: "[CICD] Project Information - {{ gitlab_project_name }}"

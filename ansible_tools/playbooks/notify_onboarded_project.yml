@@ -12,6 +12,7 @@
         from_address: "{{ sendgrid_from_email_address }}"
         to_addresses: "{{ gitlab_email_address }}"
         subject: "[CICD] Project Information - {{ gitlab_project_name }}"
-        body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
-        html_body: yes
+        body: "The most recent Ansible deployment was successful."
+        #body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"
+        #html_body: yes
       delegate_to: localhost

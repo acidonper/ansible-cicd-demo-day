@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   vars:
-    sendgrid_from_email_address: ansibledemoday@redhat.com
+    sendgrid_from_email_address: cfernand@redhat.com
 
   tasks:
     - name: debug
@@ -17,13 +17,10 @@
     - name: Send Onboarded Project Information
       community.general.sendgrid:
         api_key: "{{ lookup('env','SENGRID_API_KEY') }}"
-        # api_key: "{{ sendgrid_api_key }}"
-        from_address: "cfernand@redhat.com"
-        to_addresses: "ansibledemoday@gmail.com"
+        from_address: "{{ sendgrid_from_email_address }}"
+        to_addresses: "{{ gitlab_email_address }}"
         subject: "Deployment success."
         body: "The most recent Ansible deployment was successful."
-        #from_address: "{{ sendgrid_from_email_address }}"
-        #to_addresses: "{{ gitlab_email_address }}"
         #subject: "CICD Project Information"
         #body: "The most recent Ansible deployment was successful."
         #body: "{{ lookup('template', '../templates/onboarded_project.html.j2') }}"

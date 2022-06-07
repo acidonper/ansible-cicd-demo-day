@@ -1,6 +1,6 @@
 api_username: admin
 api_password: password
-api_url: http://appreports-app-report-dev.apps.aap.sandbox1672.opentlc.com/reports/new
+api_url: http://appreports-app-report-dev.apps.ocp4cluster.ocp4.cfernand.com/reports/new
 report: 
   assets:
     current:

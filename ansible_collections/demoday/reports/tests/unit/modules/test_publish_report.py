@@ -28,7 +28,7 @@ def test_publish_report(module_mock):
     set_module_args({
         'username': 'admin',
         'password': 'password',
-        'url': 'http://appreports-app-report-dev.apps.aap.sandbox1672.opentlc.com/reports/new',
+        'url': 'http://appreports-app-report-dev.apps.ocp4cluster.ocp4.cfernand.com/reports/new',
         'report': {
             'assets': {
                 'current': {

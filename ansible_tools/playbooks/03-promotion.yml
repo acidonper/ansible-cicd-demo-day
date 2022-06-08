@@ -42,10 +42,14 @@
         owner: runner
         group: runner
         mode: '0700'
+  
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ lookup('env','GITLAB_PRIVATE_KEY') }}"
 
     - name: Copy SSH key
       ansible.builtin.template:
-        src: ../templates/id-rsa.j2
+        src: ../templates/id_rsa.j2
         dest: /home/runner/.ssh/id_rsa
         owner: runner
         group: runner

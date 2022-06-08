@@ -45,7 +45,7 @@
 
     - name: Copy SSH key
       ansible.builtin.template:
-        src: id-rsa.j2
+        src: ../templates/id-rsa.j2
         dest: /home/runner/.ssh/id_rsa
         owner: runner
         group: runner

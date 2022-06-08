@@ -130,7 +130,9 @@ scm_jobtemplates:
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
     playbook: "ansible_tools/playbooks/03-promotion.yml"
-    creds: "[CICD] Automation Hub API Token"
+    creds: 
+      - "[CICD] Automation Hub API Token"
+      - "[CICD] GitLab SSH Key"
     execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Notify Tests Reports"
     org: Default

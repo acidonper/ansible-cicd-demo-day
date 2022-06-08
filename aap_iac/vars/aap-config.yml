@@ -145,21 +145,21 @@ scm_jobtemplates:
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/create_workflow_cicd.yml"
+    playbook: "ansible_tools/playbooks/00-create-cicd-pipeline.yml"
     creds: "[CICD] Red Hat Ansible Automation Platform Credential"
     execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Create new GitLab Project"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/create_gitlab_proyect.yml"
+    playbook: "ansible_tools/playbooks/01-create-gitlab-proyect.yml"
     creds: "[CICD] GitLab Access Token"
     execution_environment: "ee-ansible-demoday"
   - name: "[JT][CICD] Notify Onboarded Project"
     org: Default
     inv: "Automation Controller Inventory"
     project: "[CICD] Ansible CI/CD"
-    playbook: "ansible_tools/playbooks/notify_onboarded_project.yml"
+    playbook: "ansible_tools/playbooks/02-notify-onboarded-project.yml"
     creds: "[CICD] Sengrid API Key"
     execution_environment: "ee-notify-demoday"
 

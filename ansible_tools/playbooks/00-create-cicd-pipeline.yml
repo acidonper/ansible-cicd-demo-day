@@ -13,11 +13,21 @@
         webhook_service: gitlab
       register: aap_new_workflow
 
-    - name: "Add {{ gitlab_username }} to CICD Workflow Job Template"
+    - name: "Add {{ gitlab_username }} as Executor to CICD Workflow Job Template"
       ansible.controller.role:
         user: "{{ gitlab_username }}"
         role: execute
         workflow: "[WF][CICD] {{ gitlab_project_name }} - Pipeline"
+        state: present
+
+    - name: "Add {{ gitlab_username }} as Viewer to CICD Job Templates"
+      ansible.controller.role:
+        user: "{{ gitlab_username }}"
+        role: read
+        job_template:
+          - "[JT][CICD] Sanity Tests"
+          - "[JT][CICD] Units Tests"
+          - "[JT][CICD] Integration Tests"
         state: present
  
     - name: Set Workflow Job Template ID

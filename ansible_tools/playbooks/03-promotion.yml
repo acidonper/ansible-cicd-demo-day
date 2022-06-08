@@ -60,6 +60,7 @@
         repo: "{{ gitlab_repository | regex_replace('https://', 'git@') | regex_replace('com/', 'com:') }}"
         dest: '/tmp/ansible-collection-folder-ssh'
         version: 'master'
+        accept_hostkey: yes
 
     - name: Merge Develop Changes
       ansible.builtin.shell: 

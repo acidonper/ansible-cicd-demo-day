@@ -22,7 +22,7 @@
       set_fact:
         galaxy_dict: "{{ collection_galaxy_file['content'] | b64decode | from_yaml }}"
 
-    - name: approve Ansible  Collection
+    - name: "Approve Ansible Collection {{ ansible_collection }}"
       ansible.builtin.uri:
         url: "https://{{ lookup('env', 'HUB_HOST') }}/api/galaxy/v3/collections/{{ ansible_namespace }}/{{ ansible_collection }}/versions/{{ galaxy_dict.version  }}/move/staging/published/"
         method: POST
@@ -33,6 +33,7 @@
         status_code:
           - 200
           - 202
+      ignore_errors: true
 
     - name: Create SSH directory
       ansible.builtin.file:

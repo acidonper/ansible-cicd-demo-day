@@ -43,13 +43,21 @@
         group: runner
         mode: '0700'
 
-    - name: Create ssh key connection
-      ansible.builtin.copy: 
-        dest: "/home/runner/.ssh/id_rsa"
-        content: "{{ lookup('env', 'GITLAB_PRIVATE_KEY') }}"
+    - name: Copy SSH key
+      ansible.builtin.template:
+        src: id-rsa.j2
+        dest: /home/runner/.ssh/id_rsa
         owner: runner
         group: runner
         mode: '0600'
+
+#    - name: Create ssh key connection
+#      ansible.builtin.copy: 
+#        dest: "/home/runner/.ssh/id_rsa"
+#        content: "{{ lookup('env', 'GITLAB_PRIVATE_KEY') }}"
+#        owner: runner
+#        group: runner
+#        mode: '0600'
 
     - name: Pause for 10 minutes
       ansible.builtin.pause:

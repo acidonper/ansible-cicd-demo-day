@@ -51,6 +51,10 @@
         group: runner
         mode: '0600'
 
+    - name: Pause for 10 minutes
+      ansible.builtin.pause:
+        minutes: 10
+
     - name: Git checkout SSH
       ansible.builtin.git:
         repo: "{{ gitlab_repository | regex_replace('https://', 'git@') | regex_replace('com/', 'com:') }}"

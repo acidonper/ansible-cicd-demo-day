@@ -5,6 +5,8 @@ aap_pass: "{{ vault_aap_pass }}"
 hub_host: "{{ vault_hub_host }}"
 hub_token: "{{ vault_hub_token }}"
 
+python_interpreter: "{% raw %}{{ ansible_playbook_python }}{% endraw %}"
+
 slack_webhook: "{{ vault_slack_webhook }}"
 
 domain: demoday.com
@@ -38,7 +40,7 @@ hosts:
   - name: localhost
     desc: ""
     inv: "Automation Controller Inventory"
-    vars: { "ansible_connection": "local", "ansible_python_interpreter": '{{ ansible_playbook_python }}' }
+    vars: { "ansible_connection": "local", "ansible_python_interpreter": "{% raw %}{{ python_interpreter }}{% endraw %}" }
 
 execution_enviroment: 
   - name: ee-ansible-demoday
